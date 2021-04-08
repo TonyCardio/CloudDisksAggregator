@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDisksAggregator", "CloudDisksAggregator\CloudDisksAggregator.csproj", "{F854CF81-453B-407F-8DB4-15D2EEF73F0B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F854CF81-453B-407F-8DB4-15D2EEF73F0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F854CF81-453B-407F-8DB4-15D2EEF73F0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F854CF81-453B-407F-8DB4-15D2EEF73F0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F854CF81-453B-407F-8DB4-15D2EEF73F0B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
