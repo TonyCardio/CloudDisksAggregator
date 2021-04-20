@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>WinExe</OutputType>
         <TargetFramework>net5.0-windows</TargetFramework>
         <UseWindowsForms>true</UseWindowsForms>
     </PropertyGroup>
@@ -9,17 +8,5 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
       <PlatformTarget>x64</PlatformTarget>
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="CefSharp.WinForms" Version="89.0.170" />
-      <PackageReference Include="Dropbox.Api" Version="6.4.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="AuthAppData" />
-      <Folder Include="Properties" />
-      <Folder Include="Resources" />
-      <Folder Include="ViewControls" />
-    </ItemGroup>
 
 </Project>
