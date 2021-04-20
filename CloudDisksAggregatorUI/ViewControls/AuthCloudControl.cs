@@ -1,11 +1,11 @@
-﻿using CefSharp;
-using CefSharp.WinForms;
-using CloudDisksAggregator.AuthAppData;
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using CefSharp;
+using CefSharp.WinForms;
+using CloudDisksAggregatorUI.AuthAppData;
 
-namespace CloudDisksAggregator.ViewControls
+namespace CloudDisksAggregatorUI.ViewControls
 {
     public partial class AuthCloudControl : UserControl
     {

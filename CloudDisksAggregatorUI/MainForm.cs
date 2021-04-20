@@ -1,10 +1,10 @@
-﻿using CloudDisksAggregator.AuthAppData;
-using CloudDisksAggregator.ViewControls;
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using CloudDisksAggregatorUI.AuthAppData;
+using CloudDisksAggregatorUI.ViewControls;
 
-namespace CloudDisksAggregator
+namespace CloudDisksAggregatorUI
 {
     public partial class MainForm : Form
     {

@@ -1,4 +1,4 @@
-﻿namespace CloudDisksAggregator.AuthAppData
+﻿namespace CloudDisksAggregatorUI.AuthAppData
 {
     public interface IAuthData
     {

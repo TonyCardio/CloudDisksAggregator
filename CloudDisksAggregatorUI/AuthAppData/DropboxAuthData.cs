@@ -1,6 +1,6 @@
 ﻿using Dropbox.Api;
 
-namespace CloudDisksAggregator.AuthAppData
+namespace CloudDisksAggregatorUI.AuthAppData
 {
     public class DropboxAuthData : IAuthData
     {

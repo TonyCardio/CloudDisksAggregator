@@ -1,4 +1,4 @@
-﻿namespace CloudDisksAggregator
+﻿namespace CloudDisksAggregatorUI
 {
     partial class MainForm
     {
