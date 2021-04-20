@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDisksAggregator", "Clo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDisksAggregatorUI", "CloudDisksAggregatorUI\CloudDisksAggregatorUI.csproj", "{8DD9ABF6-F57E-4D1F-80FB-BBBBCA1E1D63}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDisksAggregatorTests", "CloudDisksAggregatorTests\CloudDisksAggregatorTests.csproj", "{D5CDBD09-7DEA-44B8-9BCD-64D8A4A1BC2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{8DD9ABF6-F57E-4D1F-80FB-BBBBCA1E1D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DD9ABF6-F57E-4D1F-80FB-BBBBCA1E1D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DD9ABF6-F57E-4D1F-80FB-BBBBCA1E1D63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5CDBD09-7DEA-44B8-9BCD-64D8A4A1BC2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5CDBD09-7DEA-44B8-9BCD-64D8A4A1BC2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5CDBD09-7DEA-44B8-9BCD-64D8A4A1BC2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5CDBD09-7DEA-44B8-9BCD-64D8A4A1BC2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
