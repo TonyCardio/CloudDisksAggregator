@@ -11,7 +11,7 @@ using YandexDisk.Client.Protocol;
 
 namespace CloudDisksAggregator.Clouds
 {
-    public class YandexDiskApiHandler: CloudDriveHelper, ICloudDrive
+    public class YandexDiskApiHandler : CloudDriveHelper, ICloudDrive
     {
         private IDiskApi DiskApi { get; }
         public string UserAccessToken { get; }
@@ -28,9 +28,9 @@ namespace CloudDisksAggregator.Clouds
             var entity = GetEntityInfo(pathToEntity);
             var pathForSave = $"{pathToCatalogForSave}/{entity.Name}";
             await DiskApi.Files.UploadFileAsync(
-                pathForSave, 
-                false, 
-                pathToEntity, 
+                pathForSave,
+                false,
+                pathToEntity,
                 CancellationToken.None);
         }
 
@@ -44,13 +44,14 @@ namespace CloudDisksAggregator.Clouds
                 Path.Combine(pathToCatalogForSave, entity.Name));
         }
 
-        public async Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog = "/")
+        public async Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog)
         {
             ThrowIfTokenNotSet(DiskApi.Equals(null));
             return CatalogContentsMapper.YandexCatalogContentsMapper(
                 (await DiskApi.MetaInfo.GetInfoAsync(
-                    new ResourceRequest {Path = pathToCatalog},
+                    new ResourceRequest { Path = pathToCatalog },
                     CancellationToken.None)).Embedded.Items);
         }
+        public Task<List<DiskEntityInfo>> GetCatalogContents() => GetCatalogContents("/");  
     }
 }

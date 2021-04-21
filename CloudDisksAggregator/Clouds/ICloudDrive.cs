@@ -10,5 +10,6 @@ namespace CloudDisksAggregator.Clouds
         public Task Upload(string pathToEntity, string pathToCatalogForSave = "/");
         public Task Download(string pathToEntity, string pathToCatalogForSave);
         public Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog);
+        public Task<List<DiskEntityInfo>> GetCatalogContents();
     }
 }

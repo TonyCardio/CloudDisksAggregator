@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
 using CloudDisksAggregator.Clouds;
 using CloudDisksAggregatorInfrastructure.InMemoryStorage;
+using CloudDisksAggregatorUI.UI.ViewEntity;
 
 namespace CloudDisksAggregatorUI.Infrastructure
 {
-    public class WarmedUpCloudDriveStorageFactory : IInMemoryStorageFactory<string, ICloudDrive>
+    public class WarmedUpCloudDriveStorageFactory : IInMemoryStorageFactory<DriveViewInfo, ICloudDrive>
     {
         private readonly IAppSettings settings;
 
@@ -13,9 +14,9 @@ namespace CloudDisksAggregatorUI.Infrastructure
             this.settings = settings;
         }
 
-        public IInMemoryStorage<string, ICloudDrive> Create()
+        public IInMemoryStorage<DriveViewInfo, ICloudDrive> Create()
         {
-            var storage = new SimpleInMemoryStorage<string, ICloudDrive>(settings.PathToObjectsStorage);
+            var storage = new SimpleInMemoryStorage<DriveViewInfo, ICloudDrive>(settings.PathToObjectsStorage);
             storage.WarmUpCache();
             return storage;
         }

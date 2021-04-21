@@ -47,11 +47,13 @@ namespace CloudDisksAggregator.Clouds
             await File.WriteAllBytesAsync(pathForSave, data);
         }
 
-        public async Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog = "")
+        public async Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog)
         {
             ThrowIfTokenNotSet(DiskApi.Equals(null));
             return CatalogContentsMapper.DropboxCatalogContentsMapper(
                 (await DiskApi.Files.ListFolderAsync(pathToCatalog)).Entries);
         }
+
+        public Task<List<DiskEntityInfo>> GetCatalogContents() => GetCatalogContents("");
     }
 }

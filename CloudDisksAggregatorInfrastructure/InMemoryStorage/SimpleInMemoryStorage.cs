@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -33,7 +34,7 @@ namespace CloudDisksAggregatorInfrastructure.InMemoryStorage
             items.Add(key, value);
             var kvp = new KeyValuePair<TKey, TValue>(key, value);
             var serialized = JsonConvert.SerializeObject(kvp, Formatting.Indented, settings);
-            File.WriteAllText(Path.Join(pathToData, $"{key}.json"), serialized);
+            File.WriteAllText(Path.Join(pathToData, $"{Guid.NewGuid()}.json"), serialized);
         }
 
         public void WarmUpCache()
@@ -44,6 +45,14 @@ namespace CloudDisksAggregatorInfrastructure.InMemoryStorage
                 var (key, value) = JsonConvert.DeserializeObject<KeyValuePair<TKey, TValue>>(serialized, settings);
                 items.Add(key, value);
             }
+        }
+
+        public List<(TKey, TValue)> GetAll()
+        {
+            var pairs = new List<(TKey, TValue)>();
+            foreach (var (key, value) in items)
+                 pairs.Add( (key, value));
+            return pairs;
         }
     }
 }
