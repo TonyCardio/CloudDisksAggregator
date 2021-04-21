@@ -5,7 +5,6 @@ using CefSharp;
 using CefSharp.WinForms;
 using CloudDisksAggregator.Clouds;
 using CloudDisksAggregator.CloudWrappers;
-using CloudDisksAggregatorUI.AuthAppData;
 using CloudDisksAggregatorUI.UI.ViewEntity;
 
 namespace CloudDisksAggregatorUI.UI.ViewControls
