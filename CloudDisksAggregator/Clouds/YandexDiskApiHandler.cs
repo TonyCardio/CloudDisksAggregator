@@ -13,9 +13,14 @@ namespace CloudDisksAggregator.Clouds
 {
     public class YandexDiskApiHandler: CloudDriveHelper, ICloudDrive
     {
-        private IDiskApi DiskApi { get; set; }
+        private IDiskApi DiskApi { get; }
+        public string UserAccessToken { get; }
 
-        public void SetToken(string token) => DiskApi = new DiskHttpApi(token);
+        public YandexDiskApiHandler(string userAccessToken)
+        {
+            UserAccessToken = userAccessToken;
+            DiskApi = new DiskHttpApi(userAccessToken);
+        }
 
         public async Task Upload(string pathToEntity, string pathToCatalogForSave = "")
         {

@@ -10,9 +10,14 @@ namespace CloudDisksAggregator.Clouds
 {
     public class DropboxApiHandler : CloudDriveHelper, ICloudDrive
     {
-        private DropboxClient DiskApi { get; set; }
+        private DropboxClient DiskApi { get; }
+        public string UserAccessToken { get; }
 
-        public void SetToken(string token) => DiskApi = new DropboxClient(token);
+        public DropboxApiHandler(string userAccessToken)
+        {
+            UserAccessToken = userAccessToken;
+            DiskApi = new DropboxClient(userAccessToken);
+        }
 
         public async Task Upload(string pathToEntity, string pathToCatalogForSave = "")
         {
