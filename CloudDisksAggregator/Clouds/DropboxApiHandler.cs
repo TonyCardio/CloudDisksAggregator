@@ -8,7 +8,7 @@ using Dropbox.Api.Stone;
 
 namespace CloudDisksAggregator.Clouds
 {
-    public class DropboxApiHandler : CloudDriveHelper, ICloudDrive
+    public class DropboxApiHandler : ICloudDrive
     {
         private DropboxClient DiskApi { get; }
         public string UserAccessToken { get; }
@@ -21,8 +21,7 @@ namespace CloudDisksAggregator.Clouds
 
         public async Task Upload(string pathToEntity, string pathToCatalogForSave = "")
         {
-            ThrowIfTokenNotSet(DiskApi.Equals(null));
-            var entity = GetEntityInfo(pathToEntity);
+            var entity = new DiskEntityInfo(pathToEntity);
             var data = ReadEntity(entity.FullPath);
             await DiskApi.Files.UploadAsync(
                 $"{pathToCatalogForSave}/{entity.Name}",
@@ -35,8 +34,7 @@ namespace CloudDisksAggregator.Clouds
 
         public async Task Download(string pathToEntity, string pathToCatalogForSave)
         {
-            ThrowIfTokenNotSet(DiskApi.Equals(null));
-            var entity = GetEntityInfo(pathToEntity);
+            var entity = new DiskEntityInfo(pathToEntity);
             var response = await DiskApi.Files.DownloadAsync(entity.FullPath);
             await Save(response, $@"{pathToCatalogForSave}/{entity.Name}");
         }
@@ -49,7 +47,6 @@ namespace CloudDisksAggregator.Clouds
 
         public async Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog = "")
         {
-            ThrowIfTokenNotSet(DiskApi.Equals(null));
             return CatalogContentsMapper.DropboxCatalogContentsMapper(
                 (await DiskApi.Files.ListFolderAsync(pathToCatalog)).Entries);
         }
