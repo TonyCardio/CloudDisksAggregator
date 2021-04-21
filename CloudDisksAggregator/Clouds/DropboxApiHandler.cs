@@ -20,12 +20,12 @@ namespace CloudDisksAggregator.Clouds
             var data = ReadEntity(entity.FullPath);
             await DiskApi.Files.UploadAsync(
                 $"{pathToCatalogForSave}/{entity.Name}",
-                WriteMode.Overwrite.Instance, 
+                WriteMode.Overwrite.Instance,
                 body: data);
         }
 
         private static MemoryStream ReadEntity(string pathToEntity)
-            => new(File.ReadAllBytes(pathToEntity));
+            => new MemoryStream(File.ReadAllBytes(pathToEntity));
 
         public async Task Download(string pathToEntity, string pathToCatalogForSave)
         {
