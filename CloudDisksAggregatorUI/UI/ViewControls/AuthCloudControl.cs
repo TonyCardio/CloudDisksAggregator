@@ -5,7 +5,7 @@ using CefSharp;
 using CefSharp.WinForms;
 using CloudDisksAggregatorUI.AuthAppData;
 
-namespace CloudDisksAggregatorUI.ViewControls
+namespace CloudDisksAggregatorUI.UI.ViewControls
 {
     public partial class AuthCloudControl : UserControl
     {

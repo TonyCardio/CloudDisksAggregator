@@ -1,5 +1,5 @@
 ﻿
-namespace CloudDisksAggregatorUI.ViewControls
+namespace CloudDisksAggregatorUI.UI.ViewControls
 {
     partial class AuthCloudControl
     {

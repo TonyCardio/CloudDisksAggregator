@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Windows.Forms;
 using CloudDisksAggregatorUI.AuthAppData;
-using CloudDisksAggregatorUI.ViewControls;
+using CloudDisksAggregatorUI.UI.ViewControls;
 
-namespace CloudDisksAggregatorUI
+namespace CloudDisksAggregatorUI.UI
 {
     public partial class MainForm : Form
     {
@@ -15,11 +15,12 @@ namespace CloudDisksAggregatorUI
         }
 
         #region View
+
         private Control[] optionPanels;
 
         private void InitView()
         {
-            optionPanels = new[] { yaOptionPanel, dropOptionPanel, addDiskSelectPanel };
+            optionPanels = new[] {yaOptionPanel, dropOptionPanel, addDiskSelectPanel};
         }
 
         private void HideAllPanels()
@@ -46,9 +47,11 @@ namespace CloudDisksAggregatorUI
             HideAllPanels();
             addDiskSelectPanel.Show();
         }
+
         #endregion
 
         #region Auth
+
         private void TakeToken(UserControl userControl, string token)
         {
             userControl.Dispose();
@@ -79,6 +82,7 @@ namespace CloudDisksAggregatorUI
                 controlPanel.Controls.Remove(authControl);
             }
         }
+
         #endregion
     }
 }
