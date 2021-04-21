@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace CloudDisksAggregator.Clouds
                 Path.Combine(pathToCatalogForSave, entity.Name));
         }
 
-        public async Task<object> GetCatalogContents(string pathToCatalog = "/")
+        public async Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog = "/")
         {
             ThrowIfTokenNotSet(DiskApi.Equals(null));
             return CatalogContentsMapper.YandexCatalogContentsMapper(

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using CloudDisksAggregator.Data;
 
 namespace CloudDisksAggregator.Clouds
 {
@@ -7,6 +9,6 @@ namespace CloudDisksAggregator.Clouds
         public void SetToken(string token);
         public Task Upload(string pathToEntity, string pathToCatalogForSave = "/");
         public Task Download(string pathToEntity, string pathToCatalogForSave);
-        public Task<object> GetCatalogContents(string pathToCatalog);
+        public Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog);
     }
 }

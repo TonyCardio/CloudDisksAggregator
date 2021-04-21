@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using CloudDisksAggregator.Data;
 using Dropbox.Api;
@@ -41,7 +42,7 @@ namespace CloudDisksAggregator.Clouds
             await File.WriteAllBytesAsync(pathForSave, data);
         }
 
-        public async Task<object> GetCatalogContents(string pathToCatalog = "")
+        public async Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog = "")
         {
             ThrowIfTokenNotSet(DiskApi.Equals(null));
             return CatalogContentsMapper.DropboxCatalogContentsMapper(
