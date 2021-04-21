@@ -31,4 +31,9 @@
       <PackageReference Include="Dropbox.Api" Version="6.4.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\CloudDisksAggregatorInfrastructure\CloudDisksAggregatorInfrastructure.csproj" />
+      <ProjectReference Include="..\CloudDisksAggregator\CloudDisksAggregator.csproj" />
+    </ItemGroup>
+
 </Project>
