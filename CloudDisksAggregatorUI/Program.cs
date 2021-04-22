@@ -26,7 +26,7 @@ namespace CloudDisksAggregatorUI
             var container = BuildContainer();
             var selector = container.Resolve<ICloudDriveSelector>();
             var storage = container.Resolve<IInMemoryStorage<DriveViewInfo, ICloudDriveEngine>>();
-            Application.Run(new MainForm(selector,storage));
+            Application.Run(new MainForm(selector, storage));
         }
 
         private static IContainer BuildContainer()
@@ -34,12 +34,10 @@ namespace CloudDisksAggregatorUI
             var builder = new ContainerBuilder();
 
             var path = AppDomain.CurrentDomain.BaseDirectory;
-            foreach (var assembly in Directory.GetFiles(path, "CloudDisksAggregator*.dll")
-                .Select(Assembly.LoadFrom))
-            {
-                builder.RegisterAssemblyModules(assembly);
-            }
-
+            var assemblies = Directory.GetFiles(path, "CloudDisksAggregator*.dll")
+                .Select(Assembly.LoadFrom).ToArray();
+            builder.RegisterAssemblyModules(assemblies);
+            
             return builder.Build();
         }
     }
