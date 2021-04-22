@@ -54,6 +54,7 @@ namespace CloudDisksAggregatorUI.UI.ViewControls
             selectBtn.ForeColor = System.Drawing.SystemColors.ButtonFace;
             selectBtn.Location = new System.Drawing.Point(0, 77);
             selectBtn.Name = "selectDiskBtn";
+            selectBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             selectBtn.Size = new System.Drawing.Size(240, 23);
             selectBtn.TabIndex = 0;
             selectBtn.Text = "Select";
@@ -89,7 +90,7 @@ namespace CloudDisksAggregatorUI.UI.ViewControls
 | System.Windows.Forms.AnchorStyles.Right)));
             nameItemBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(32)))), ((int)(((byte)(39)))));
             nameItemBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            nameItemBox.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            nameItemBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             nameItemBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
             nameItemBox.Location = new System.Drawing.Point(124, 25);
             nameItemBox.Name = "nameBox";
