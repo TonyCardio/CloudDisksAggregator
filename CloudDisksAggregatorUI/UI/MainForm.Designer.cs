@@ -1,4 +1,6 @@
-﻿namespace CloudDisksAggregatorUI.UI
+﻿using System.Drawing;
+
+namespace CloudDisksAggregatorUI.UI
 {
     partial class MainForm
     {
@@ -29,6 +31,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.sideMenuPanel = new System.Windows.Forms.Panel();
             this.helpBtn = new System.Windows.Forms.Button();
             this.dropOptionPanel = new System.Windows.Forms.Panel();
@@ -279,7 +282,7 @@
             this.addYaDiskBtn.FlatAppearance.BorderSize = 0;
             this.addYaDiskBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addYaDiskBtn.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.addYaDiskBtn.Image = global::CloudDisksAggregator.Properties.Resources.yandexDiskLogo;
+            this.addYaDiskBtn.Image = global::CloudDisksAggregatorUI.Properties.Resources.yandexDiskLogo;
             this.addYaDiskBtn.Location = new System.Drawing.Point(35, 35);
             this.addYaDiskBtn.Margin = new System.Windows.Forms.Padding(10);
             this.addYaDiskBtn.Name = "addYaDiskBtn";
@@ -296,7 +299,7 @@
             this.addDropboxBtn.FlatAppearance.BorderSize = 0;
             this.addDropboxBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addDropboxBtn.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.addDropboxBtn.Image = global::CloudDisksAggregator.Properties.Resources.dropboxlogo;
+            this.addDropboxBtn.Image = global::CloudDisksAggregatorUI.Properties.Resources.dropboxlogo;
             this.addDropboxBtn.Location = new System.Drawing.Point(255, 35);
             this.addDropboxBtn.Margin = new System.Windows.Forms.Padding(10);
             this.addDropboxBtn.Name = "addDropboxBtn";
@@ -315,9 +318,10 @@
             this.ClientSize = new System.Drawing.Size(984, 761);
             this.Controls.Add(this.controlPanel);
             this.Controls.Add(this.sideMenuPanel);
+            this.Icon = Icon.FromHandle(global::CloudDisksAggregatorUI.Properties.Resources.appicon.GetHicon());
             this.MinimumSize = new System.Drawing.Size(950, 600);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Disk Cloud Aggregator";
             this.sideMenuPanel.ResumeLayout(false);
             this.dropOptionPanel.ResumeLayout(false);
             this.yaOptionPanel.ResumeLayout(false);

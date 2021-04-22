@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CloudDisksAggregatorInfrastructure.InMemoryStorage
 {
@@ -6,5 +7,6 @@ namespace CloudDisksAggregatorInfrastructure.InMemoryStorage
     {
         TValue Get(TKey key);
         void Add(TKey key, TValue value);
+        List<(TKey, TValue)> GetAll();
     }
 }

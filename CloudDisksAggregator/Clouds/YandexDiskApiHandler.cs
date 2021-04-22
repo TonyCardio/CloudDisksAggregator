@@ -42,12 +42,13 @@ namespace CloudDisksAggregator.Clouds
                 Path.Combine(pathToCatalogForSave, entity.Name));
         }
 
-        public async Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog = "/")
+        public async Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog)
         {
             return CatalogContentsMapper.YandexCatalogContentsMapper(
                 (await DiskApi.MetaInfo.GetInfoAsync(
-                    new ResourceRequest {Path = pathToCatalog},
+                    new ResourceRequest { Path = pathToCatalog },
                     CancellationToken.None)).Embedded.Items);
         }
+        public Task<List<DiskEntityInfo>> GetCatalogContents() => GetCatalogContents("/");  
     }
 }
