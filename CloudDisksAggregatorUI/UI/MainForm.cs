@@ -93,15 +93,15 @@ namespace CloudDisksAggregatorUI.UI
 
         private void AddYandexDisk(object sender, EventArgs e)
         {
-            InitAuthContorl(CloudDriveType.YandexDisk);
+            InitAuthControl(CloudDriveType.YandexDisk);
         }
 
         private void AddDropbox(object sender, EventArgs e)
         {
-            InitAuthContorl(CloudDriveType.Dropbox);
+            InitAuthControl(CloudDriveType.Dropbox);
         }
 
-        private void InitAuthContorl(CloudDriveType driveType)
+        private void InitAuthControl(CloudDriveType driveType)
         {
             HideAllPanels();
             if (cloudDriveSelector.TryGetCloudDrive(driveType, out var cloudDrive))
