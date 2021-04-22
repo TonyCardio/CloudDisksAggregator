@@ -1,6 +1,4 @@
-﻿using CloudDisksAggregator.Clouds;
-using CloudDisksAggregator.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,17 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CloudDisksAggregator;
+using CloudDisksAggregator.CloudDrives;
+using CloudDisksAggregator.CloudEngines;
 
 namespace CloudDisksAggregatorUI.UI.ViewControls
 {
     public partial class CloudContentControl : UserControl
     {
-        private readonly ICloudDrive cloudDrive;
+        private readonly ICloudDriveEngine cloudDriveEngine;
 
-        public CloudContentControl(ICloudDrive cloudDrive)
+        public CloudContentControl(ICloudDriveEngine cloudDriveEngine)
         {
             Dock = DockStyle.Fill;
-            this.cloudDrive = cloudDrive;
+            this.cloudDriveEngine = cloudDriveEngine;
             AddItems();
             InitializeComponent();
             Name = "CloudContentControl";
@@ -27,18 +28,18 @@ namespace CloudDisksAggregatorUI.UI.ViewControls
 
         public async void AddItems()
         {
-            var items = await cloudDrive.GetCatalogContents();
+            var items = await cloudDriveEngine.GetCatalogContent();
             viewContentList.Items.AddRange(items.Select(CreateViewItem).ToArray());
         }
 
-        private ListViewItem CreateViewItem(DiskEntityInfo diskEntity)
+        private ListViewItem CreateViewItem(DriveEntityInfo driveEntity)
         {
             var item = new ListViewItem(
-                new string[] { diskEntity.Name },
-                diskEntity.Expansion == "Dir" ? 1 : 0,
+                new string[] { driveEntity.Name },
+                driveEntity.Expansion == "Dir" ? 1 : 0,
                 SystemColors.ButtonFace, Color.Empty,
               new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point));
-            item.Tag = diskEntity;
+            item.Tag = driveEntity;
             return item;
         }
     }

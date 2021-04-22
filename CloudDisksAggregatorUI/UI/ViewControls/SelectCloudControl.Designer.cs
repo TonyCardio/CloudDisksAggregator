@@ -1,7 +1,7 @@
-﻿
-using CloudDisksAggregator.CloudWrappers;
-using CloudDisksAggregatorUI.UI.ViewEntity;
+﻿using CloudDisksAggregatorUI.UI.ViewEntity;
 using System.Windows.Forms;
+using CloudDisksAggregator;
+using CloudDisksAggregator.CloudDrives;
 
 namespace CloudDisksAggregatorUI.UI.ViewControls
 {

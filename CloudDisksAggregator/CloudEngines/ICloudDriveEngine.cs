@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CloudDisksAggregator.Data;
+using CloudDisksAggregator.CloudDrives;
 
-namespace CloudDisksAggregator.Clouds
+namespace CloudDisksAggregator.CloudEngines
 {
-    public interface ICloudDrive
+    public interface ICloudDriveEngine
     {
         public string UserAccessToken { get; }
         public Task Upload(string pathToEntity, string pathToCatalogForSave = "/");
         public Task Download(string pathToEntity, string pathToCatalogForSave);
-        public Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog);
-        public Task<List<DiskEntityInfo>> GetCatalogContents();
+        public Task<List<DriveEntityInfo>> GetCatalogContent(string pathToCatalog);
+        public Task<List<DriveEntityInfo>> GetCatalogContent();
     }
 }

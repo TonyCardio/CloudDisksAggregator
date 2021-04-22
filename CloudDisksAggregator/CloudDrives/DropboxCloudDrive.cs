@@ -1,9 +1,9 @@
-﻿using CloudDisksAggregator.Clouds;
+﻿using CloudDisksAggregator.CloudEngines;
 using Dropbox.Api;
 
-namespace CloudDisksAggregator.CloudWrappers
+namespace CloudDisksAggregator.CloudDrives
 {
-    public class DropboxCloudDriveWrapper : ICloudDriveWrapper
+    public class DropboxCloudDrive : ICloudDrive
     {
         public CloudDriveType DriveType => CloudDriveType.Dropbox;
         public string AppId => "6dmbqyqong7h511";
@@ -12,6 +12,6 @@ namespace CloudDisksAggregator.CloudWrappers
         public string AuthUrl =>
             DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppId, RedirectUrl).AbsoluteUri;
 
-        public ICloudDrive CreateCloudDrive(string userAccessToken) => new DropboxApiHandler(userAccessToken);
+        public ICloudDriveEngine CreateDriveEngine(string userAccessToken) => new DropboxEngine(userAccessToken);
     }
 }

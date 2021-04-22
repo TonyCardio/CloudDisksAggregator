@@ -289,7 +289,7 @@ namespace CloudDisksAggregatorUI.UI
             this.addYaDiskBtn.Size = new System.Drawing.Size(200, 190);
             this.addYaDiskBtn.TabIndex = 0;
             this.addYaDiskBtn.TabStop = false;
-            this.addYaDiskBtn.Text = "Yandex Dsik";
+            this.addYaDiskBtn.Text = "Yandex Disk";
             this.addYaDiskBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.addYaDiskBtn.UseVisualStyleBackColor = true;
             this.addYaDiskBtn.Click += new System.EventHandler(this.AddYandexDisk);

@@ -3,52 +3,53 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using CloudDisksAggregator.Data;
+using CloudDisksAggregator.CloudDrives;
 using YandexDisk.Client;
 using YandexDisk.Client.Clients;
 using YandexDisk.Client.Http;
 using YandexDisk.Client.Protocol;
 
-namespace CloudDisksAggregator.Clouds
+namespace CloudDisksAggregator.CloudEngines
 {
-    public class YandexDiskApiHandler: ICloudDrive
+    public class YandexDiskEngine : ICloudDriveEngine
     {
-        private IDiskApi DiskApi { get; }
+        private readonly IDiskApi diskApi;
         public string UserAccessToken { get; }
 
-        public YandexDiskApiHandler(string userAccessToken)
+        public YandexDiskEngine(string userAccessToken)
         {
             UserAccessToken = userAccessToken;
-            DiskApi = new DiskHttpApi(userAccessToken);
+            diskApi = new DiskHttpApi(userAccessToken);
         }
 
         public async Task Upload(string pathToEntity, string pathToCatalogForSave = "")
         {
-            var entity = new DiskEntityInfo(pathToEntity);
+            var entity = new DriveEntityInfo(pathToEntity);
             var pathForSave = $"{pathToCatalogForSave}/{entity.Name}";
-            await DiskApi.Files.UploadFileAsync(
-                pathForSave, 
-                false, 
-                pathToEntity, 
+            await diskApi.Files.UploadFileAsync(
+                pathForSave,
+                false,
+                pathToEntity,
                 CancellationToken.None);
         }
 
         public async Task Download(string pathToEntity, string pathToCatalogForSave = "")
         {
-            var entity = new DiskEntityInfo(pathToEntity);
+            var entity = new DriveEntityInfo(pathToEntity);
             if (pathToCatalogForSave.Equals(""))
                 pathToCatalogForSave = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            await DiskApi.Files.DownloadFileAsync(path: entity.FullPath,
+            await diskApi.Files.DownloadFileAsync(path: entity.FullPath,
                 Path.Combine(pathToCatalogForSave, entity.Name));
         }
 
-        public async Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog)
+        public async Task<List<DriveEntityInfo>> GetCatalogContent(string pathToCatalog)
         {
-            return CatalogContentsMapper.YandexCatalogContentsMapper(
-                (await DiskApi.MetaInfo.GetInfoAsync(
-                    new ResourceRequest { Path = pathToCatalog },
+            return CatalogContentsMapper.MapYandexCatalogContent(
+                (await diskApi.MetaInfo.GetInfoAsync(
+                    new ResourceRequest {Path = pathToCatalog},
                     CancellationToken.None)).Embedded.Items);
         }
-        public Task<List<DiskEntityInfo>> GetCatalogContents() => GetCatalogContents("/");  
+
+        public Task<List<DriveEntityInfo>> GetCatalogContent() => GetCatalogContent("/");
     }
 }

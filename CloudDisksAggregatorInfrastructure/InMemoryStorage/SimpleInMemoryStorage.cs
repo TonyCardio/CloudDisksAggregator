@@ -7,7 +7,7 @@ namespace CloudDisksAggregatorInfrastructure.InMemoryStorage
 {
     public class SimpleInMemoryStorage<TKey, TValue> : IInMemoryStorage<TKey, TValue>
     {
-        private static JsonSerializerSettings settings =
+        private static readonly JsonSerializerSettings settings =
             new JsonSerializerSettings()
             {
                 TypeNameHandling = TypeNameHandling.All
@@ -47,7 +47,7 @@ namespace CloudDisksAggregatorInfrastructure.InMemoryStorage
             }
         }
 
-        public List<(TKey, TValue)> GetAll()
+        public List<(TKey, TValue)> GetAllElements()
         {
             var pairs = new List<(TKey, TValue)>();
             foreach (var (key, value) in items)

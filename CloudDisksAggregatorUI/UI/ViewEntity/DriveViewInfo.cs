@@ -1,9 +1,10 @@
-﻿using CloudDisksAggregator.CloudWrappers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CloudDisksAggregator;
+using CloudDisksAggregator.CloudDrives;
 
 namespace CloudDisksAggregatorUI.UI.ViewEntity
 {

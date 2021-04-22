@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using CloudDisksAggregator.Clouds;
-using CloudDisksAggregator.CloudWrappers;
+using CloudDisksAggregator;
+using CloudDisksAggregator.CloudDrives;
+using CloudDisksAggregator.CloudEngines;
 using CloudDisksAggregatorInfrastructure.InMemoryStorage;
 using CloudDisksAggregatorUI.Infrastructure;
 using CloudDisksAggregatorUI.UI.ViewControls;
@@ -13,17 +14,17 @@ namespace CloudDisksAggregatorUI.UI
 {
     public partial class MainForm : Form
     {
-        private readonly ICloudWrapperSelector cloudWrapperSelector;
-        private readonly IInMemoryStorage<DriveViewInfo, ICloudDrive> repository;
+        private readonly ICloudDriveSelector cloudDriveSelector;
+        private readonly IInMemoryStorage<DriveViewInfo, ICloudDriveEngine> repository;
 
         public MainForm(
-            ICloudWrapperSelector cloudWrapperSelector,
-            IInMemoryStorage<DriveViewInfo, ICloudDrive> inMemoryStorage)
+            ICloudDriveSelector cloudDriveSelector,
+            IInMemoryStorage<DriveViewInfo, ICloudDriveEngine> inMemoryStorage)
         {
             InitializeComponent();
             InitView();
             repository = inMemoryStorage;
-            this.cloudWrapperSelector = cloudWrapperSelector;
+            this.cloudDriveSelector = cloudDriveSelector;
         }
 
         #region View
@@ -73,7 +74,7 @@ namespace CloudDisksAggregatorUI.UI
         private void InitCloudsSeletcControl(CloudDriveType driveType)
         {
             var selectContol = new SelectCloudControl(
-                repository.GetAll()
+                repository.GetAllElements()
                     .Select(pair => pair.Item1)
                     .Where(info => info.DriveType == driveType));
             selectContol.AcceptUserChoice += ShowCloudContent;
@@ -84,9 +85,9 @@ namespace CloudDisksAggregatorUI.UI
 
         #region Auth
 
-        private void SaveDrive(ICloudDrive cloudDrive, DriveViewInfo driveViewInfo)
+        private void SaveDrive(ICloudDriveEngine cloudDriveEngine, DriveViewInfo driveViewInfo)
         {
-            repository.Add(driveViewInfo, cloudDrive);
+            repository.Add(driveViewInfo, cloudDriveEngine);
             HideAllPanels();
         }
 
@@ -103,9 +104,9 @@ namespace CloudDisksAggregatorUI.UI
         private void InitAuthContorl(CloudDriveType driveType)
         {
             HideAllPanels();
-            if (cloudWrapperSelector.TryGetCloudWrapper(driveType, out var driveWrapper))
+            if (cloudDriveSelector.TryGetCloudDrive(driveType, out var cloudDrive))
             {
-                var authControl = new AuthCloudControl(driveWrapper);
+                var authControl = new AuthCloudControl(cloudDrive);
                 authControl.AuthSucceeded += SaveDrive;
                 controlPanel.Controls.Add(authControl);
             }

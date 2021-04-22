@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 
-namespace CloudDisksAggregator.Data
+namespace CloudDisksAggregator
 {
-    public class DiskEntityInfo
+    public class DriveEntityInfo
     {
         public readonly string Name;
         public readonly string Expansion;
         public readonly string FullPath;
         
-        public DiskEntityInfo(string pathToEntity)
+        public DriveEntityInfo(string pathToEntity)
         {
             var (entityName, entityExpansion) = ParsePathToEntity(pathToEntity);
             Name = entityName;

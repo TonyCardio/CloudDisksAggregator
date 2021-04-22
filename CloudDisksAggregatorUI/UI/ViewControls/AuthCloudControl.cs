@@ -3,27 +3,27 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using CefSharp;
 using CefSharp.WinForms;
-using CloudDisksAggregator.Clouds;
-using CloudDisksAggregator.CloudWrappers;
+using CloudDisksAggregator.CloudDrives;
+using CloudDisksAggregator.CloudEngines;
 using CloudDisksAggregatorUI.UI.ViewEntity;
 
 namespace CloudDisksAggregatorUI.UI.ViewControls
 {
     public partial class AuthCloudControl : UserControl
     {
-        private readonly ICloudDriveWrapper driveWrapper;
-        public event Action<ICloudDrive, DriveViewInfo> AuthSucceeded;
+        private readonly ICloudDrive drive;
+        public event Action<ICloudDriveEngine, DriveViewInfo> AuthSucceeded;
         private readonly ChromiumWebBrowser browser;
         private readonly Regex tokenPattern = new Regex("access_token=(.+?)&[t|e]");
         private string cloudToken;
 
-        public AuthCloudControl(ICloudDriveWrapper driveWrapper)
+        public AuthCloudControl(ICloudDrive drive)
         {
             Name = "AuthCloudControl";
             InitializeComponent();
-            this.driveWrapper = driveWrapper;
+            this.drive = drive;
             Dock = DockStyle.Fill;
-            browser = new ChromiumWebBrowser(driveWrapper.AuthUrl);
+            browser = new ChromiumWebBrowser(drive.AuthUrl);
             Controls.Add(browser);
             browser.Name = "browser";
             browser.Dock = DockStyle.Fill;
@@ -53,8 +53,8 @@ namespace CloudDisksAggregatorUI.UI.ViewControls
         private void setNameBtn_Click(object sender, EventArgs e)
         {
             AuthSucceeded(
-                driveWrapper.CreateCloudDrive(cloudToken),
-                new DriveViewInfo(driveWrapper.DriveType, cloudNameBox.Text));
+                drive.CreateDriveEngine(cloudToken),
+                new DriveViewInfo(drive.DriveType, cloudNameBox.Text));
         }
     }
 }

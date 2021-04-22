@@ -1,4 +1,4 @@
-﻿namespace CloudDisksAggregator.CloudWrappers
+﻿namespace CloudDisksAggregator
 {
     public enum CloudDriveType
     {

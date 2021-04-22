@@ -1,29 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using CloudDisksAggregator.Data;
+using CloudDisksAggregator.CloudDrives;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 using Dropbox.Api.Stone;
 
-namespace CloudDisksAggregator.Clouds
+namespace CloudDisksAggregator.CloudEngines
 {
-    public class DropboxApiHandler : ICloudDrive
+    public class DropboxEngine : ICloudDriveEngine
     {
-        private DropboxClient DiskApi { get; }
+        private readonly DropboxClient diskApi;
         public string UserAccessToken { get; }
 
-        public DropboxApiHandler(string userAccessToken)
+        public DropboxEngine(string userAccessToken)
         {
             UserAccessToken = userAccessToken;
-            DiskApi = new DropboxClient(userAccessToken);
+            diskApi = new DropboxClient(userAccessToken);
         }
 
         public async Task Upload(string pathToEntity, string pathToCatalogForSave = "")
         {
-            var entity = new DiskEntityInfo(pathToEntity);
+            var entity = new DriveEntityInfo(pathToEntity);
             var data = ReadEntity(entity.FullPath);
-            await DiskApi.Files.UploadAsync(
+            await diskApi.Files.UploadAsync(
                 $"{pathToCatalogForSave}/{entity.Name}",
                 WriteMode.Overwrite.Instance,
                 body: data);
@@ -34,8 +34,8 @@ namespace CloudDisksAggregator.Clouds
 
         public async Task Download(string pathToEntity, string pathToCatalogForSave)
         {
-            var entity = new DiskEntityInfo(pathToEntity);
-            var response = await DiskApi.Files.DownloadAsync(entity.FullPath);
+            var entity = new DriveEntityInfo(pathToEntity);
+            var response = await diskApi.Files.DownloadAsync(entity.FullPath);
             await Save(response, $@"{pathToCatalogForSave}/{entity.Name}");
         }
 
@@ -45,12 +45,12 @@ namespace CloudDisksAggregator.Clouds
             await File.WriteAllBytesAsync(pathForSave, data);
         }
 
-        public async Task<List<DiskEntityInfo>> GetCatalogContents(string pathToCatalog)
+        public async Task<List<DriveEntityInfo>> GetCatalogContent(string pathToCatalog)
         {
-            return CatalogContentsMapper.DropboxCatalogContentsMapper(
-                (await DiskApi.Files.ListFolderAsync(pathToCatalog)).Entries);
+            return CatalogContentsMapper.MapDropboxCatalogContent(
+                (await diskApi.Files.ListFolderAsync(pathToCatalog)).Entries);
         }
 
-        public Task<List<DiskEntityInfo>> GetCatalogContents() => GetCatalogContents("");
+        public Task<List<DriveEntityInfo>> GetCatalogContent() => GetCatalogContent("");
     }
 }

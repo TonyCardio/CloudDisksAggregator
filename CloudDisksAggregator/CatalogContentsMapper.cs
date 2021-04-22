@@ -3,20 +3,20 @@ using System.Linq;
 using Dropbox.Api.Files;
 using YandexDisk.Client.Protocol;
 
-namespace CloudDisksAggregator.Data
+namespace CloudDisksAggregator
 {
     public static class CatalogContentsMapper
     {
-        public static List<DiskEntityInfo> YandexCatalogContentsMapper(IEnumerable<Resource> catalogContent)
+        public static List<DriveEntityInfo> MapYandexCatalogContent(IEnumerable<Resource> catalogContent)
             => catalogContent
-                .Select(entity => new DiskEntityInfo(
+                .Select(entity => new DriveEntityInfo(
                     entity.Path
                         .Replace("disk:", "")))
                 .ToList();
 
-        public static List<DiskEntityInfo> DropboxCatalogContentsMapper(IEnumerable<Metadata> catalogContent) 
+        public static List<DriveEntityInfo> MapDropboxCatalogContent(IEnumerable<Metadata> catalogContent)
             => catalogContent
-                .Select(entity => new DiskEntityInfo(
+                .Select(entity => new DriveEntityInfo(
                     entity.PathDisplay))
                 .ToList();
     }
