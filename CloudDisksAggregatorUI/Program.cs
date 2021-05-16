@@ -4,11 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using Autofac;
-using CloudDisksAggregator.CloudEngines;
-using CloudDisksAggregatorInfrastructure.InMemoryStorage;
-using CloudDisksAggregatorUI.Infrastructure;
+using CloudDisksAggregator.API;
+using CloudDisksAggregator.Core;
 using CloudDisksAggregatorUI.UI;
-using CloudDisksAggregatorUI.UI.ViewEntity;
 
 namespace CloudDisksAggregatorUI
 {
@@ -24,9 +22,8 @@ namespace CloudDisksAggregatorUI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var container = BuildContainer();
-            var selector = container.Resolve<ICloudDriveSelector>();
-            var storage = container.Resolve<IInMemoryStorage<DriveViewInfo, ICloudDriveEngine>>();
-            Application.Run(new MainForm(selector, storage));
+            var apis = container.Resolve<ICloudApi[]>();
+            Application.Run(new MainForm(apis));
         }
 
         private static IContainer BuildContainer()
@@ -37,7 +34,7 @@ namespace CloudDisksAggregatorUI
             var assemblies = Directory.GetFiles(path, "CloudDisksAggregator*.dll")
                 .Select(Assembly.LoadFrom).ToArray();
             builder.RegisterAssemblyModules(assemblies);
-            
+
             return builder.Build();
         }
     }

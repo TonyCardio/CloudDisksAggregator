@@ -1,30 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using CloudDisksAggregator;
-using CloudDisksAggregator.CloudDrives;
-using CloudDisksAggregator.CloudEngines;
-using CloudDisksAggregatorInfrastructure.InMemoryStorage;
-using CloudDisksAggregatorUI.Infrastructure;
-using CloudDisksAggregatorUI.UI.ViewControls;
-using CloudDisksAggregatorUI.UI.ViewEntity;
+using CloudDisksAggregator.Core;
+using CloudDisksAggregator.UI;
 
 namespace CloudDisksAggregatorUI.UI
 {
     public partial class MainForm : Form
     {
-        private readonly ICloudDriveSelector cloudDriveSelector;
-        private readonly IInMemoryStorage<DriveViewInfo, ICloudDriveEngine> repository;
+        private readonly UserAccount[] accounts;
+        private readonly ICloudApi[] apis;
 
-        public MainForm(
-            ICloudDriveSelector cloudDriveSelector,
-            IInMemoryStorage<DriveViewInfo, ICloudDriveEngine> inMemoryStorage)
+        public MainForm(ICloudApi[] apis)
         {
+            this.apis = apis;
+            accounts = apis.SelectMany(x => x.Drive.LoadAccounts()).ToArray();
             InitializeComponent();
             InitView();
-            repository = inMemoryStorage;
-            this.cloudDriveSelector = cloudDriveSelector;
         }
 
         #region View
@@ -33,92 +25,58 @@ namespace CloudDisksAggregatorUI.UI
 
         private void InitView()
         {
-            optionPanels = new[] {yaOptionPanel, dropOptionPanel, addDiskSelectPanel};
+            optionPanels = new[] {addDiskSelectPanel};
+        }
+
+        private void OnSelectDriveButton_Click(object sender, EventArgs e)
+        {
+            HideAllPanels();
+            var engine = (ICloudDriveEngine) ((Button) sender).Tag;
+            controlPanel.Controls.Add(new CloudContentControl(engine));
         }
 
         private void HideAllPanels()
         {
-            HideAuthControl();
+            HideAddNewControl();
             RemoveControlByKey("CloudContentControl");
             RemoveControlByKey("SelectCloudControl");
             foreach (var panel in optionPanels)
                 panel.Hide();
         }
 
-        private void ShowCloudContent(DriveViewInfo viewInfo, UserControl control)
-        {
-            controlPanel.Controls.Remove(control);
-            controlPanel.Controls.Add(new CloudContentControl(repository.Get(viewInfo)));
-        }
-
-        private void yaDiskBtn_Click(object sender, EventArgs e)
-        {
-            HideAllPanels();
-            InitCloudsSeletcControl(CloudDriveType.YandexDisk);
-            yaOptionPanel.Show();
-        }
-
-        private void dropBtn_Click(object sender, EventArgs e)
-        {
-            HideAllPanels();
-            InitCloudsSeletcControl(CloudDriveType.Dropbox);
-            dropOptionPanel.Show();
-        }
-
-        private void addNewBtn_Click(object sender, EventArgs e)
+        private void OnAddNewButton_Click(object sender, EventArgs e)
         {
             HideAllPanels();
             addDiskSelectPanel.Show();
         }
 
-        private void InitCloudsSeletcControl(CloudDriveType driveType)
-        {
-            var selectContol = new SelectCloudControl(
-                repository.GetAllElements()
-                    .Select(pair => pair.Item1)
-                    .Where(info => info.DriveType == driveType));
-            selectContol.AcceptUserChoice += ShowCloudContent;
-            controlPanel.Controls.Add(selectContol);
-        }
-
         #endregion
 
-        #region Auth
+        #region AddNew
 
-        private void SaveDrive(ICloudDriveEngine cloudDriveEngine, DriveViewInfo driveViewInfo)
+        private void OnAddNewDrive(UserAccount account)
         {
-            repository.Add(driveViewInfo, cloudDriveEngine);
+            AddNewDiskSelectButton(account);
             HideAllPanels();
         }
 
-        private void AddYandexDisk(object sender, EventArgs e)
-        {
-            InitAuthControl(CloudDriveType.YandexDisk);
-        }
-
-        private void AddDropbox(object sender, EventArgs e)
-        {
-            InitAuthControl(CloudDriveType.Dropbox);
-        }
-
-        private void InitAuthControl(CloudDriveType driveType)
+        private void OnNewDriveButton_Click(object sender, EventArgs e)
         {
             HideAllPanels();
-            if (cloudDriveSelector.TryGetCloudDrive(driveType, out var cloudDrive))
-            {
-                var authControl = new AuthCloudControl(cloudDrive);
-                authControl.AuthSucceeded += SaveDrive;
-                controlPanel.Controls.Add(authControl);
-            }
+            var drive = (ICloudDriveObject) ((Button) sender).Tag;
+            var addDriveControl = new AddNewCloudControl();
+            addDriveControl.AddingSucceeded += OnAddNewDrive;
+            controlPanel.Controls.Add(addDriveControl);
+            drive.AddNewAccount(addDriveControl);
         }
 
-        private void HideAuthControl()
+        private void HideAddNewControl()
         {
-            if (controlPanel.Controls.ContainsKey("AuthCloudControl"))
+            if (controlPanel.Controls.ContainsKey("AddNewCloudControl"))
             {
-                var authControl = controlPanel.Controls.Find("AuthCloudControl", false).First();
-                authControl.Dispose();
-                controlPanel.Controls.Remove(authControl);
+                var addNewControl = controlPanel.Controls.Find("AddNewCloudControl", false).First();
+                addNewControl.Dispose();
+                controlPanel.Controls.Remove(addNewControl);
             }
         }
 
