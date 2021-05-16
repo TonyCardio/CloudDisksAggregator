@@ -31,8 +31,6 @@
 
     <ItemGroup>
       <PackageReference Include="Autofac" Version="6.1.0" />
-      <PackageReference Include="CefSharp.WinForms" Version="89.0.170" />
-      <PackageReference Include="Dropbox.Api" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
