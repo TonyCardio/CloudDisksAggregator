@@ -1,7 +1,7 @@
 ﻿
-namespace CloudDisksAggregatorUI.UI.ViewControls
+namespace CloudDisksAggregator.UI
 {
-    partial class AuthCloudControl
+    partial class BrowserAuthControl
     {
         /// <summary> 
         /// Обязательная переменная конструктора.
@@ -84,7 +84,7 @@ namespace CloudDisksAggregatorUI.UI.ViewControls
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.setNamePanel);
-            this.Name = "AuthCloudControl";
+            this.Name = "BrowserAuthControl";
             this.Size = new System.Drawing.Size(575, 384);
             this.setNamePanel.ResumeLayout(false);
             this.setNamePanel.PerformLayout();

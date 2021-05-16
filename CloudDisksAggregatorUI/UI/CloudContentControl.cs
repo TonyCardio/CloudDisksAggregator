@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using CloudDisksAggregator;
-using CloudDisksAggregator.CloudDrives;
-using CloudDisksAggregator.CloudEngines;
+using CloudDisksAggregator.Core;
 
-namespace CloudDisksAggregatorUI.UI.ViewControls
+namespace CloudDisksAggregatorUI.UI
 {
     public partial class CloudContentControl : UserControl
     {
@@ -26,7 +18,7 @@ namespace CloudDisksAggregatorUI.UI.ViewControls
             Name = "CloudContentControl";
         }
 
-        public async void AddItems()
+        private async void AddItems()
         {
             var items = await cloudDriveEngine.GetCatalogContent();
             viewContentList.Items.AddRange(items.Select(CreateViewItem).ToArray());

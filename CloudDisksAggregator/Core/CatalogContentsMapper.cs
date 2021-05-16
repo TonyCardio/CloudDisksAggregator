@@ -3,7 +3,7 @@ using System.Linq;
 using Dropbox.Api.Files;
 using YandexDisk.Client.Protocol;
 
-namespace CloudDisksAggregator
+namespace CloudDisksAggregator.Core
 {
     public static class CatalogContentsMapper
     {

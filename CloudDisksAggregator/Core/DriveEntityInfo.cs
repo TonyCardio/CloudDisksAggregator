@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace CloudDisksAggregator
+namespace CloudDisksAggregator.Core
 {
     public class DriveEntityInfo
     {

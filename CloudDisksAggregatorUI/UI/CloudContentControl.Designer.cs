@@ -1,5 +1,5 @@
 ﻿
-namespace CloudDisksAggregatorUI.UI.ViewControls
+namespace CloudDisksAggregatorUI.UI
 {
     partial class CloudContentControl
     {

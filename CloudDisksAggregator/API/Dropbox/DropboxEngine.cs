@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using CloudDisksAggregator.CloudDrives;
+using CloudDisksAggregator.Core;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 using Dropbox.Api.Stone;
 
-namespace CloudDisksAggregator.CloudEngines
+namespace CloudDisksAggregator.API.Dropbox
 {
     public class DropboxEngine : ICloudDriveEngine
     {

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using CloudDisksAggregator.CloudDrives;
+using CloudDisksAggregator.Core;
 using YandexDisk.Client;
 using YandexDisk.Client.Clients;
 using YandexDisk.Client.Http;
 using YandexDisk.Client.Protocol;
 
-namespace CloudDisksAggregator.CloudEngines
+namespace CloudDisksAggregator.API.YandexDisk
 {
     public class YandexDiskEngine : ICloudDriveEngine
     {

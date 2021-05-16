@@ -11,8 +11,35 @@
 
     <ItemGroup>
       <PackageReference Include="Autofac" Version="6.1.0" />
+      <PackageReference Include="CefSharp.WinForms" Version="89.0.170" />
       <PackageReference Include="Dropbox.Api" Version="6.4.0" />
       <PackageReference Include="YandexDisk.Client" Version="1.3.22" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="UI\AddNewCloudControl.cs">
+        <SubType>UserControl</SubType>
+      </Compile>
+      <Compile Update="Res.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Res.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="API\YandexDisk\Res\mainLogoStub.bmp" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Resources\mainLogoStub.bmp" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Res.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Res.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

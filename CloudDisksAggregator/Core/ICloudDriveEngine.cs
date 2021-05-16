@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CloudDisksAggregator.CloudDrives;
 
-namespace CloudDisksAggregator.CloudEngines
+namespace CloudDisksAggregator.Core
 {
     public interface ICloudDriveEngine
     {

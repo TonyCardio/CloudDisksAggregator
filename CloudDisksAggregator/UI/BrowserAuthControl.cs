@@ -3,27 +3,25 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using CefSharp;
 using CefSharp.WinForms;
-using CloudDisksAggregator.CloudDrives;
-using CloudDisksAggregator.CloudEngines;
-using CloudDisksAggregatorUI.UI.ViewEntity;
+using CloudDisksAggregator.Core;
 
-namespace CloudDisksAggregatorUI.UI.ViewControls
+namespace CloudDisksAggregator.UI
 {
-    public partial class AuthCloudControl : UserControl
+    public partial class BrowserAuthControl : UserControl, ICustomAddingControl
     {
-        private readonly ICloudDrive drive;
-        public event Action<ICloudDriveEngine, DriveViewInfo> AuthSucceeded;
+        private readonly Func<string, ICloudDriveEngine> createEngine;
+        public event Action<UserAccount> AddingSucceeded;
         private readonly ChromiumWebBrowser browser;
         private readonly Regex tokenPattern = new Regex("access_token=(.+?)&[t|e]");
         private string cloudToken;
 
-        public AuthCloudControl(ICloudDrive drive)
+        public BrowserAuthControl(string url, Func<string, ICloudDriveEngine> createEngine)
         {
             Name = "AuthCloudControl";
             InitializeComponent();
-            this.drive = drive;
+            this.createEngine = createEngine;
             Dock = DockStyle.Fill;
-            browser = new ChromiumWebBrowser(drive.AuthUrl);
+            browser = new ChromiumWebBrowser(url);
             Controls.Add(browser);
             browser.Name = "browser";
             browser.Dock = DockStyle.Fill;
@@ -37,11 +35,11 @@ namespace CloudDisksAggregatorUI.UI.ViewControls
             if (token.Success)
             {
                 Invoke(new Action(() =>
-               {
-                   Controls.Remove(browser);
-                   cloudToken = token.Groups[1].Value;
-                   setNamePanel.Show();
-               }));
+                {
+                    Controls.Remove(browser);
+                    cloudToken = token.Groups[1].Value;
+                    setNamePanel.Show();
+                }));
             }
         }
 
@@ -52,9 +50,7 @@ namespace CloudDisksAggregatorUI.UI.ViewControls
 
         private void setNameBtn_Click(object sender, EventArgs e)
         {
-            AuthSucceeded(
-                drive.CreateDriveEngine(cloudToken),
-                new DriveViewInfo(drive.DriveType, cloudNameBox.Text));
+            AddingSucceeded?.Invoke(new UserAccount(cloudNameBox.Text, createEngine(cloudToken)));
         }
     }
 }
