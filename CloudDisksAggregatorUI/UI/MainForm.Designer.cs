@@ -166,7 +166,7 @@ namespace CloudDisksAggregatorUI.UI
 
         private void AddNewDiskSelectButton(UserAccount acc)
         {
-            var btn = new System.Windows.Forms.Button();
+            var btn = new Button();
             btn.FlatAppearance.BorderSize = 0;
             btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(173, 20, 0);
             btn.FlatStyle = FlatStyle.Flat;

@@ -63,9 +63,29 @@ namespace CloudDisksAggregator {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap dropboxMainLogo {
+            get {
+                object obj = ResourceManager.GetObject("dropboxMainLogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mainLogoStub {
             get {
                 object obj = ResourceManager.GetObject("mainLogoStub", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap yandexDiskMainLogo {
+            get {
+                object obj = ResourceManager.GetObject("yandexDiskMainLogo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
