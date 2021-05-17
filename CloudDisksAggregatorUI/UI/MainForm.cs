@@ -64,7 +64,7 @@ namespace CloudDisksAggregatorUI.UI
         {
             HideAllPanels();
             var drive = (ICloudDriveObject) ((Button) sender).Tag;
-            var addDriveControl = new AddNewCloudControl();
+            var addDriveControl = new AddNewCloudControl {Dock = DockStyle.Fill};
             addDriveControl.AddingSucceeded += OnAddNewDrive;
             controlPanel.Controls.Add(addDriveControl);
             drive.AddNewAccount(addDriveControl);
