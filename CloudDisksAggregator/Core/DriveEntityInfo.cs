@@ -19,6 +19,7 @@ namespace CloudDisksAggregator.Core
 
         private static ValueTuple<string, string> ParsePathToEntity(string pathToEntity)
         {
+            pathToEntity = pathToEntity.Replace(@"\", "/");
             var catalogsAndEntity = pathToEntity.Split('/');
             var entityName = catalogsAndEntity.Last();
             var nameAndExpansion = entityName.Split(".");

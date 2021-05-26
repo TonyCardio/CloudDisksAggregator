@@ -1,4 +1,5 @@
-﻿
+﻿using CloudDisksAggregator.Core;
+
 namespace CloudDisksAggregatorUI.UI
 {
     partial class CloudContentControl
@@ -34,6 +35,7 @@ namespace CloudDisksAggregatorUI.UI
             this.searchBox = new System.Windows.Forms.TextBox();
             this.viewContentList = new System.Windows.Forms.ListView();
             this.iconList = new System.Windows.Forms.ImageList(this.components);
+            this.folderPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
             // searchBox
@@ -72,10 +74,21 @@ namespace CloudDisksAggregatorUI.UI
             this.iconList.Images.SetKeyName(0, "fileIcon.png");
             this.iconList.Images.SetKeyName(1, "folderIcon.png");
             // 
+            // folderPanel
+            // 
+            this.folderPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(32)))), ((int)(((byte)(39)))));
+            this.folderPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.folderPanel.Location = new System.Drawing.Point(0, 379);
+            this.folderPanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.folderPanel.Name = "folderPanel";
+            this.folderPanel.Size = new System.Drawing.Size(719, 33);
+            this.folderPanel.TabIndex = 2;
+            // 
             // CloudContentControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.folderPanel);
             this.Controls.Add(this.viewContentList);
             this.Controls.Add(this.searchBox);
             this.Name = "CloudContentControl";
@@ -87,8 +100,26 @@ namespace CloudDisksAggregatorUI.UI
 
         #endregion
 
+        private void AddFolderBtn(DriveEntityInfo driveEntity)
+        {
+            var directoryBtn = new System.Windows.Forms.Button();
+            directoryBtn.FlatAppearance.BorderSize = 0;
+            directoryBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(0)))));
+            directoryBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            directoryBtn.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            directoryBtn.Size = new System.Drawing.Size(98, 34);
+            directoryBtn.Name = "directoryBtn";
+            directoryBtn.TabIndex = 1;
+            directoryBtn.Text = driveEntity.Name + " >";
+            directoryBtn.Tag = driveEntity;
+            directoryBtn.UseVisualStyleBackColor = true;
+            directoryBtn.Click += DirectoryBtn_Click;
+            this.folderPanel.Controls.Add(directoryBtn);
+        }
+
         private System.Windows.Forms.TextBox searchBox;
         private System.Windows.Forms.ListView viewContentList;
         private System.Windows.Forms.ImageList iconList;
+        private System.Windows.Forms.FlowLayoutPanel folderPanel;
     }
 }
