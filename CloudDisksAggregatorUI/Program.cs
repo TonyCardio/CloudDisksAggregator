@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using Autofac;
-using CloudDisksAggregator.API;
 using CloudDisksAggregator.Core;
 using CloudDisksAggregatorUI.UI;
 

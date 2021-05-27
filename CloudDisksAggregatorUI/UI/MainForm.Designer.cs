@@ -38,6 +38,7 @@ namespace CloudDisksAggregatorUI.UI
             this.sideMenuPanel = new System.Windows.Forms.Panel();
             this.helpBtn = new System.Windows.Forms.Button();
             this.addNewBtn = new System.Windows.Forms.Button();
+            this.allBtn = new System.Windows.Forms.Button();
             this.logoPanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.controlPanel = new System.Windows.Forms.Panel();
@@ -54,7 +55,7 @@ namespace CloudDisksAggregatorUI.UI
             this.helpBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(0)))));
             this.helpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.helpBtn.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.helpBtn.Location = new System.Drawing.Point(0, 145);
+            this.helpBtn.Location = new System.Drawing.Point(0, 190);
             this.helpBtn.Name = "helpBtn";
             this.helpBtn.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.helpBtn.Size = new System.Drawing.Size(200, 45);
@@ -70,7 +71,7 @@ namespace CloudDisksAggregatorUI.UI
             this.addNewBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(0)))));
             this.addNewBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addNewBtn.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.addNewBtn.Location = new System.Drawing.Point(0, 100);
+            this.addNewBtn.Location = new System.Drawing.Point(0, 145);
             this.addNewBtn.Name = "addNewBtn";
             this.addNewBtn.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.addNewBtn.Size = new System.Drawing.Size(200, 45);
@@ -80,6 +81,23 @@ namespace CloudDisksAggregatorUI.UI
             this.addNewBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.addNewBtn.UseVisualStyleBackColor = true;
             this.addNewBtn.Click += new System.EventHandler(this.OnAddNewButton_Click);
+            // 
+            // allButton
+            // 
+            this.allBtn.FlatAppearance.BorderSize = 0;
+            this.allBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(0)))));
+            this.allBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.allBtn.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.allBtn.Location = new System.Drawing.Point(0, 100);
+            this.allBtn.Name = "allBtn";
+            this.allBtn.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.allBtn.Size = new System.Drawing.Size(200, 45);
+            this.allBtn.TabIndex = 1;
+            this.allBtn.TabStop = false;
+            this.allBtn.Text = "All";
+            this.allBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.allBtn.UseVisualStyleBackColor = true;
+            this.allBtn.Click += OnAllButton_Click;
             // 
             // logoPanel
             // 
@@ -111,6 +129,7 @@ namespace CloudDisksAggregatorUI.UI
             this.sideMenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(7)))), ((int)(((byte)(17)))));
             this.sideMenuPanel.Controls.Add(this.helpBtn);
             this.sideMenuPanel.Controls.Add(this.addNewBtn);
+            this.sideMenuPanel.Controls.Add(this.allBtn);
             foreach (var account in accounts) AddNewDiskSelectButton(account);
             this.sideMenuPanel.Controls.Add(this.logoPanel);
             this.sideMenuPanel.Dock = System.Windows.Forms.DockStyle.Left;
@@ -171,9 +190,10 @@ namespace CloudDisksAggregatorUI.UI
             btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(173, 20, 0);
             btn.FlatStyle = FlatStyle.Flat;
             btn.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            btn.Location = this.addNewBtn.Location;
+            btn.Location = this.allBtn.Location;
             ShiftButtonDown(this.helpBtn,45);
             ShiftButtonDown(this.addNewBtn,45);
+            ShiftButtonDown(this.allBtn,45);
             btn.Name = acc.Name;
             btn.Padding = new Padding(10, 0, 0, 0);
             btn.Size = new System.Drawing.Size(200, 45);
@@ -214,6 +234,7 @@ namespace CloudDisksAggregatorUI.UI
 
         private System.Windows.Forms.Panel sideMenuPanel;
         private System.Windows.Forms.Button addNewBtn;
+        private System.Windows.Forms.Button allBtn;
         private System.Windows.Forms.Panel logoPanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button helpBtn;
