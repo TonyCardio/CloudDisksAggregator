@@ -4,7 +4,13 @@ namespace CloudDisksAggregator.API.YandexDisk
 {
     public class YaDiskApi : ICloudApi
     {
-        public ICloudDriveObject Drive => new YaDiskCloudDrive();
-        public IResourceObject Resources => new YaDiskResources();
+        public ICloudDriveObject Drive { get; }
+        public IResourceObject Resources { get; }
+
+        public YaDiskApi()
+        {
+            Drive = new YaDiskCloudDrive();
+            Resources = new YaDiskResources();
+        }
     }
 }
