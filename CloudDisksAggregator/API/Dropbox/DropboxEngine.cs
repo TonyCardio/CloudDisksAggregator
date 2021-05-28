@@ -51,10 +51,9 @@ namespace CloudDisksAggregator.API.Dropbox
 
         public async Task<List<DriveEntityInfo>> GetCatalogContent(string pathToCatalog)
         {
+            if (pathToCatalog == "/") pathToCatalog = "";
             return CatalogContentsMapper.MapDropboxCatalogContent(
                 (await diskApi.Files.ListFolderAsync(pathToCatalog)).Entries);
         }
-
-        public Task<List<DriveEntityInfo>> GetCatalogContent() => GetCatalogContent("");
     }
 }

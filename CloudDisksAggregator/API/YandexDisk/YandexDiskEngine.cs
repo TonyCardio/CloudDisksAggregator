@@ -57,7 +57,5 @@ namespace CloudDisksAggregator.API.YandexDisk
                     new ResourceRequest {Path = pathToCatalog},
                     CancellationToken.None)).Embedded.Items);
         }
-
-        public Task<List<DriveEntityInfo>> GetCatalogContent() => GetCatalogContent("/");
     }
 }
