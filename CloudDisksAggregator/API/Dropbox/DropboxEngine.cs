@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using CloudDisksAggregator.Core;
@@ -32,25 +33,27 @@ namespace CloudDisksAggregator.API.Dropbox
         private static MemoryStream ReadEntity(string pathToEntity)
             => new MemoryStream(File.ReadAllBytes(pathToEntity));
 
-        public async Task Download(string pathToEntity, string pathToCatalogForSave)
+        public async Task<byte[]> Download(string pathToEntity)
         {
             var entity = new DriveEntityInfo(pathToEntity);
-            var response = await diskApi.Files.DownloadAsync(entity.FullPath);
-            await Save(response, $@"{pathToCatalogForSave}/{entity.Name}");
+            return await (await diskApi.Files.DownloadAsync(entity.FullPath)).GetContentAsByteArrayAsync();
         }
 
-        private static async Task Save(IDownloadResponse<FileMetadata> response, string pathForSave)
+        public async Task Save(string pathToEntity, string pathToCatalogForSave = "")
         {
-            var data = await response.GetContentAsByteArrayAsync();
-            await File.WriteAllBytesAsync(pathForSave, data);
+            var data = await Download(pathToEntity);
+            if (pathToCatalogForSave.Equals(""))
+                pathToCatalogForSave = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            var entity = new DriveEntityInfo(pathToEntity);
+            var path = $"{pathToCatalogForSave}/{entity.Name}";
+            await File.WriteAllBytesAsync(path, data);
         }
 
         public async Task<List<DriveEntityInfo>> GetCatalogContent(string pathToCatalog)
         {
+            if (pathToCatalog == "/") pathToCatalog = "";
             return CatalogContentsMapper.MapDropboxCatalogContent(
                 (await diskApi.Files.ListFolderAsync(pathToCatalog)).Entries);
         }
-
-        public Task<List<DriveEntityInfo>> GetCatalogContent() => GetCatalogContent("");
     }
 }
