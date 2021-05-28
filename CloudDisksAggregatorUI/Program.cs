@@ -5,6 +5,9 @@ using System.Reflection;
 using System.Windows.Forms;
 using Autofac;
 using CloudDisksAggregator.Core;
+using CloudDisksAggregator.FileContent;
+using CloudDisksAggregator.FileContent.FileViewers;
+using CloudDisksAggregator.FileContent.Readers;
 using CloudDisksAggregatorUI.UI;
 
 namespace CloudDisksAggregatorUI
@@ -22,7 +25,8 @@ namespace CloudDisksAggregatorUI
             Application.SetCompatibleTextRenderingDefault(false);
             var container = BuildContainer();
             var apis = container.Resolve<ICloudApi[]>();
-            Application.Run(new MainForm(apis));
+            var viewerFactory = container.Resolve<IViewerFactory>();
+            Application.Run(new MainForm(apis, viewerFactory));
         }
 
         private static IContainer BuildContainer()

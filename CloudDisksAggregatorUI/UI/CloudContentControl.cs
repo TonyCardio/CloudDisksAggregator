@@ -5,17 +5,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CloudDisksAggregator.Core;
+using CloudDisksAggregator.FileContent;
 
 namespace CloudDisksAggregatorUI.UI
 {
     public partial class CloudContentControl : UserControl
     {
+        private readonly IViewerFactory viewerFactory;
         private readonly List<ICloudDriveEngine> cloudDriveEngines;
         private string currentDirectory;
         private ICloudDriveEngine currentDriveEngine;
 
-        public CloudContentControl(IEnumerable<ICloudDriveEngine> cloudDriveEngines)
+        public CloudContentControl(IEnumerable<ICloudDriveEngine> cloudDriveEngines,
+            IViewerFactory viewerFactory)
         {
+            this.viewerFactory = viewerFactory;
             InitializeComponent();
             Dock = DockStyle.Fill;
             this.cloudDriveEngines = cloudDriveEngines.ToList();
@@ -29,6 +33,7 @@ namespace CloudDisksAggregatorUI.UI
         }
 
         #region Upload
+
         private async void CloudContentControl_DragDrop(object sender, DragEventArgs e)
         {
             var file = ((string[])e.Data.GetData(DataFormats.FileDrop)).First();
@@ -52,28 +57,33 @@ namespace CloudDisksAggregatorUI.UI
             await currentDriveEngine.Upload(filePath, currentDirectory);
             AddItems(currentDirectory, currentDriveEngine);
         }
+
         #endregion
 
         #region Navigation
+
         private void ViewContentList_ItemActivate(object sender, EventArgs e)
         {
             var driveEntity = (DriveEntityInfo)viewContentList.SelectedItems[0].Tag;
-            ChangeDirectory(driveEntity);
+            if (driveEntity.IsDirectory)
+                ChangeDirectory(driveEntity);
+            else
+            {
+                ShowFileViewer(driveEntity);
+            }
+
         }
 
         private void ChangeDirectory(DriveEntityInfo driveEntity)
         {
-            if (driveEntity.Expansion == "Dir")
+            if (driveEntity.Name == "")
+                AddItemsFromAllDrives(driveEntity.FullPath);
+            else
             {
-                if (driveEntity.Name == "")
-                    AddItemsFromAllDrives(driveEntity.FullPath);
-                else
-                {
-                    AddItems(driveEntity.FullPath, driveEntity.DriveEngine);
-                    currentDriveEngine = driveEntity.DriveEngine;
-                }
-                currentDirectory = driveEntity.FullPath;
+                AddItems(driveEntity.FullPath, driveEntity.DriveEngine);
+                currentDriveEngine = driveEntity.DriveEngine;
             }
+            currentDirectory = driveEntity.FullPath;
         }
 
         private void DirectoryBtn_Click(object sender, EventArgs e)
@@ -91,8 +101,28 @@ namespace CloudDisksAggregatorUI.UI
             var count = folderPanel.Controls.Count;
             for (int i = count - 1; i >= index; i--) folderPanel.Controls.RemoveAt(i);
         }
+
         #endregion
 
+        #region FileView
+
+        private async void ShowFileViewer(DriveEntityInfo driveEntity)
+        {
+            var driveEngine = driveEntity.DriveEngine;
+            var viewer = viewerFactory.Create(driveEntity.Name, await driveEngine.Download(driveEntity.FullPath));
+            viewer.OnClose += CloseViewer;
+            HideAll();
+            Controls.Add(viewer);
+            viewer.Show();
+        }
+
+        private void CloseViewer()
+        {
+            Controls.RemoveByKey("FileViewer");
+            ShowAll();
+        }
+
+        #endregion
 
         private async void AddItems(string catalogPath, ICloudDriveEngine driveEngine)
         {
@@ -126,6 +156,16 @@ namespace CloudDisksAggregatorUI.UI
                 new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point));
             item.Tag = driveEntity;
             return item;
+        }
+
+        private void HideAll()
+        {
+            foreach (Control control in Controls) control.Hide();
+        }
+
+        private void ShowAll()
+        {
+            foreach (Control control in Controls) control.Show();
         }
     }
 }
