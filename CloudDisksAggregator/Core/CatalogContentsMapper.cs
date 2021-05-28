@@ -7,17 +7,20 @@ namespace CloudDisksAggregator.Core
 {
     public static class CatalogContentsMapper
     {
-        public static List<DriveEntityInfo> MapYandexCatalogContent(IEnumerable<Resource> catalogContent)
+        public static List<DriveEntityInfo> MapYandexCatalogContent(IEnumerable<Resource> catalogContent, 
+            ICloudDriveEngine driveEngine)
             => catalogContent
                 .Select(entity => new DriveEntityInfo(
                     entity.Path
-                        .Replace("disk:", "")))
+                        .Replace("disk:", ""),
+                    driveEngine))
                 .ToList();
 
-        public static List<DriveEntityInfo> MapDropboxCatalogContent(IEnumerable<Metadata> catalogContent)
+        public static List<DriveEntityInfo> MapDropboxCatalogContent(IEnumerable<Metadata> catalogContent,
+            ICloudDriveEngine driveEngine)
             => catalogContent
                 .Select(entity => new DriveEntityInfo(
-                    entity.PathDisplay))
+                    entity.PathDisplay, driveEngine))
                 .ToList();
     }
 }
