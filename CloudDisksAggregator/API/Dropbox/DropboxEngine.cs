@@ -22,7 +22,7 @@ namespace CloudDisksAggregator.API.Dropbox
 
         public async Task Upload(string pathToEntity, string pathToCatalogForSave = "")
         {
-            var entity = new DriveEntityInfo(pathToEntity);
+            var entity = new DriveEntityInfo(pathToEntity, this);
             var data = ReadEntity(entity.FullPath);
             await diskApi.Files.UploadAsync(
                 $"{pathToCatalogForSave}/{entity.Name}",
@@ -35,7 +35,7 @@ namespace CloudDisksAggregator.API.Dropbox
 
         public async Task<byte[]> Download(string pathToEntity)
         {
-            var entity = new DriveEntityInfo(pathToEntity);
+            var entity = new DriveEntityInfo(pathToEntity, this);
             return await (await diskApi.Files.DownloadAsync(entity.FullPath)).GetContentAsByteArrayAsync();
         }
 
@@ -44,7 +44,7 @@ namespace CloudDisksAggregator.API.Dropbox
             var data = await Download(pathToEntity);
             if (pathToCatalogForSave.Equals(""))
                 pathToCatalogForSave = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            var entity = new DriveEntityInfo(pathToEntity);
+            var entity = new DriveEntityInfo(pathToEntity, this);
             var path = $"{pathToCatalogForSave}/{entity.Name}";
             await File.WriteAllBytesAsync(path, data);
         }
@@ -53,7 +53,7 @@ namespace CloudDisksAggregator.API.Dropbox
         {
             if (pathToCatalog == "/") pathToCatalog = "";
             return CatalogContentsMapper.MapDropboxCatalogContent(
-                (await diskApi.Files.ListFolderAsync(pathToCatalog)).Entries);
+                (await diskApi.Files.ListFolderAsync(pathToCatalog)).Entries, this);
         }
     }
 }

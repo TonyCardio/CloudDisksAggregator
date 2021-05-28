@@ -24,7 +24,7 @@ namespace CloudDisksAggregator.API.YandexDisk
 
         public async Task Upload(string pathToEntity, string pathToCatalogForSave = "")
         {
-            var entity = new DriveEntityInfo(pathToEntity);
+            var entity = new DriveEntityInfo(pathToEntity, this);
             var pathForSave = $"{pathToCatalogForSave}/{entity.Name}";
             await diskApi.Files.UploadFileAsync(
                 pathForSave,
@@ -40,10 +40,10 @@ namespace CloudDisksAggregator.API.YandexDisk
             await data.CopyToAsync(ms);
             return ms.ToArray();
         }
-        
+
         public async Task Save(string pathToEntity, string pathToCatalogForSave = "")
         {
-            var entity = new DriveEntityInfo(pathToEntity);
+            var entity = new DriveEntityInfo(pathToEntity, this);
             if (pathToCatalogForSave.Equals(""))
                 pathToCatalogForSave = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             await diskApi.Files.DownloadFileAsync(path: entity.FullPath,
@@ -54,8 +54,8 @@ namespace CloudDisksAggregator.API.YandexDisk
         {
             return CatalogContentsMapper.MapYandexCatalogContent(
                 (await diskApi.MetaInfo.GetInfoAsync(
-                    new ResourceRequest {Path = pathToCatalog},
-                    CancellationToken.None)).Embedded.Items);
+                    new ResourceRequest { Path = pathToCatalog },
+                    CancellationToken.None)).Embedded.Items, this);
         }
     }
 }

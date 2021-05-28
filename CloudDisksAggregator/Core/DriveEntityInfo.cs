@@ -8,13 +8,15 @@ namespace CloudDisksAggregator.Core
         public readonly string Name;
         public readonly string Expansion;
         public readonly string FullPath;
-        
-        public DriveEntityInfo(string pathToEntity)
+        public readonly ICloudDriveEngine DriveEngine;
+
+        public DriveEntityInfo(string pathToEntity, ICloudDriveEngine driveEngine)
         {
             var (entityName, entityExpansion) = ParsePathToEntity(pathToEntity);
             Name = entityName;
             Expansion = entityExpansion;
             FullPath = pathToEntity;
+            DriveEngine = driveEngine;
         }
 
         private static ValueTuple<string, string> ParsePathToEntity(string pathToEntity)
