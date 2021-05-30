@@ -20,17 +20,26 @@
         <Compile Update="UI\AddNewCloudControl.cs">
             <SubType>UserControl</SubType>
         </Compile>
-        <Compile Update="Res.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Res.resx</DependentUpon>
+        <Compile Update="API\Dropbox\Resources\DropboxRes.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>DropboxRes.resx</DependentUpon>
+        </Compile>
+        <Compile Update="API\YandexDisk\Resources\YandexRes.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>YandexRes.resx</DependentUpon>
         </Compile>
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Update="Res.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Res.Designer.cs</LastGenOutput>
+        <EmbeddedResource Update="API\Dropbox\Resources\DropboxRes.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>DropboxRes.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="API\YandexDisk\Resources\YandexRes.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>YandexRes.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
 
