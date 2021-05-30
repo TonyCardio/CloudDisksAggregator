@@ -32,7 +32,7 @@ namespace CloudDisksAggregator.API.YandexDisk
         {
             control.AddingSucceeded += OnSaveNewAccount;
             control.AddChildAddingControl(new BrowserAuthControl(
-                YaDiskSettings.authUrl,
+                YaDiskSettings.AuthUrl,
                 token => new YandexDiskEngine(token)
             ));
         }

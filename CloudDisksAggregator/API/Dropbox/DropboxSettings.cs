@@ -2,12 +2,12 @@
 
 namespace CloudDisksAggregator.API.Dropbox
 {
-    public class DropboxSettings
+    internal static class DropboxSettings
     {
-        public static string appId = "6dmbqyqong7h511";
-        public static string redirectUrl = "https://oauth.yandex.ru/verification_code";
+        private const string AppId = "6dmbqyqong7h511";
+        private const string RedirectUrl = "https://oauth.yandex.ru/verification_code";
 
-        public static string authUrl =
-            DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, appId, redirectUrl).AbsoluteUri;
+        public static string AuthUrl =>
+            DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppId, RedirectUrl).AbsoluteUri;
     }
 }

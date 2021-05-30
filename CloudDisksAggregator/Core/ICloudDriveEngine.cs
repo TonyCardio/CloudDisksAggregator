@@ -5,7 +5,6 @@ namespace CloudDisksAggregator.Core
 {
     public interface ICloudDriveEngine
     {
-        public string UserAccessToken { get; }
         public Task Upload(string pathToEntity, string pathToCatalogForSave = "/");
         public Task<byte[]> Download(string pathToEntity);
         public Task Save(string pathToEntity, string pathToCatalogForSave = "");
