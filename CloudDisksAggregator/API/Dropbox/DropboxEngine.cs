@@ -5,18 +5,15 @@ using System.Threading.Tasks;
 using CloudDisksAggregator.Core;
 using Dropbox.Api;
 using Dropbox.Api.Files;
-using Dropbox.Api.Stone;
 
 namespace CloudDisksAggregator.API.Dropbox
 {
     public class DropboxEngine : ICloudDriveEngine
     {
         private readonly DropboxClient diskApi;
-        public string UserAccessToken { get; }
 
         public DropboxEngine(string userAccessToken)
         {
-            UserAccessToken = userAccessToken;
             diskApi = new DropboxClient(userAccessToken);
         }
 

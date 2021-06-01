@@ -14,11 +14,9 @@ namespace CloudDisksAggregator.API.YandexDisk
     public class YandexDiskEngine : ICloudDriveEngine
     {
         private readonly IDiskApi diskApi;
-        public string UserAccessToken { get; }
 
         public YandexDiskEngine(string userAccessToken)
         {
-            UserAccessToken = userAccessToken;
             diskApi = new DiskHttpApi(userAccessToken);
         }
 
@@ -54,7 +52,7 @@ namespace CloudDisksAggregator.API.YandexDisk
         {
             return CatalogContentsMapper.MapYandexCatalogContent(
                 (await diskApi.MetaInfo.GetInfoAsync(
-                    new ResourceRequest { Path = pathToCatalog },
+                    new ResourceRequest {Path = pathToCatalog},
                     CancellationToken.None)).Embedded.Items, this);
         }
     }

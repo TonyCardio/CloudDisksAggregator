@@ -171,7 +171,7 @@ namespace CloudDisksAggregatorUI.UI
             this.Icon = Icon.FromHandle(global::CloudDisksAggregatorUI.Properties.Resources.appicon.GetHicon());
             this.MinimumSize = new System.Drawing.Size(950, 600);
             this.Name = "MainForm";
-            this.Text = "Disk Cloud Aggregator";
+            this.Text = "Cloud Disks Aggregator";
             this.sideMenuPanel.ResumeLayout(false);
             this.logoPanel.ResumeLayout(false);
             this.logoPanel.PerformLayout();
