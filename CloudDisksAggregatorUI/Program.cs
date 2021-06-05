@@ -5,9 +5,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using Autofac;
 using CloudDisksAggregator.Core;
-using CloudDisksAggregator.FileContent;
-using CloudDisksAggregator.FileContent.FileViewers;
-using CloudDisksAggregator.FileContent.Readers;
+using CloudDisksAggregatorUI.FileContent;
 using CloudDisksAggregatorUI.UI;
 
 namespace CloudDisksAggregatorUI
