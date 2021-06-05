@@ -1,11 +1,11 @@
-﻿using System;
+﻿using CloudDisksAggregator.Core;
+using CloudDisksAggregatorUI.FileContent;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CloudDisksAggregator.Core;
-using CloudDisksAggregator.FileContent;
 
 namespace CloudDisksAggregatorUI.UI
 {

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using CloudDisksAggregator.Core;
+using CloudDisksAggregator.UI;
+using CloudDisksAggregatorUI.FileContent;
+using System;
 using System.Linq;
 using System.Windows.Forms;
-using CloudDisksAggregator.Core;
-using CloudDisksAggregator.FileContent;
-using CloudDisksAggregator.UI;
 
 namespace CloudDisksAggregatorUI.UI
 {
