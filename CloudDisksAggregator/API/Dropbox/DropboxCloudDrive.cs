@@ -32,7 +32,7 @@ namespace CloudDisksAggregator.API.Dropbox
         {
             control.AddingSucceeded += OnSaveNewAccount;
             control.AddChildAddingControl(new BrowserAuthControl(
-                DropboxSettings.authUrl,
+                DropboxSettings.AuthUrl,
                 token => new DropboxEngine(token)
             ));
         }

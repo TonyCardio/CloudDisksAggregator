@@ -88,8 +88,8 @@ namespace CloudDisksAggregatorUI.UI
 
         private void DirectoryBtn_Click(object sender, EventArgs e)
         {
-            var btn = (Button)sender;
-            var driveEntity = (DriveEntityInfo)btn.Tag;
+            var btn = (Button) sender;
+            var driveEntity = (DriveEntityInfo) btn.Tag;
             RemoveAfter(btn, currentDirectory != driveEntity.FullPath);
             ChangeDirectory(driveEntity);
         }
@@ -99,7 +99,7 @@ namespace CloudDisksAggregatorUI.UI
             var index = folderPanel.Controls.IndexOf(control);
             if (!itself) index += 1;
             var count = folderPanel.Controls.Count;
-            for (int i = count - 1; i >= index; i--) folderPanel.Controls.RemoveAt(i);
+            for (var i = count - 1; i >= index; i--) folderPanel.Controls.RemoveAt(i);
         }
 
         #endregion
@@ -131,7 +131,7 @@ namespace CloudDisksAggregatorUI.UI
             if (currentDirectory != catalogPath)
                 AddFolderBtn(catalogEntity);
             var items = await driveEngine.GetCatalogContent(catalogPath);
-            viewContentList.Items.AddRange(items.Select(CreateViewItem).ToArray());
+            viewContentList?.Items.AddRange(items.Select(CreateViewItem).ToArray());
         }
 
         private async void AddItemsFromAllDrives(string catalogPath = "/")
@@ -143,18 +143,17 @@ namespace CloudDisksAggregatorUI.UI
             foreach (var engine in cloudDriveEngines)
             {
                 var items = await engine.GetCatalogContent(catalogPath);
-                viewContentList.Items.AddRange(items.Select(CreateViewItem).ToArray());
+                viewContentList?.Items.AddRange(items.Select(CreateViewItem).ToArray());
             }
         }
 
-        private ListViewItem CreateViewItem(DriveEntityInfo driveEntity)
+        private static ListViewItem CreateViewItem(DriveEntityInfo driveEntity)
         {
             var item = new ListViewItem(
-                new string[] { driveEntity.Name },
+                new string[] {driveEntity.Name},
                 driveEntity.Expansion == "Dir" ? 1 : 0,
                 SystemColors.ButtonFace, Color.Empty,
-                new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point));
-            item.Tag = driveEntity;
+                new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point)) {Tag = driveEntity};
             return item;
         }
 
