@@ -1,12 +1,12 @@
+using Autofac;
+using CloudDisksAggregator.Core;
+using CloudDisksAggregatorUI.FileContent;
+using CloudDisksAggregatorUI.UI;
 using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using Autofac;
-using CloudDisksAggregator.Core;
-using CloudDisksAggregatorUI.FileContent;
-using CloudDisksAggregatorUI.UI;
 
 namespace CloudDisksAggregatorUI
 {
