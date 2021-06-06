@@ -1,8 +1,9 @@
-﻿using System;
+﻿using CloudDisksAggregator.Core;
+using CloudDisksAggregator.UI;
+using CloudDisksAggregatorUI.FileContent;
+using System;
 using System.Linq;
 using System.Windows.Forms;
-using CloudDisksAggregator.Core;
-using CloudDisksAggregator.UI;
 
 namespace CloudDisksAggregatorUI.UI
 {
@@ -10,10 +11,12 @@ namespace CloudDisksAggregatorUI.UI
     {
         private readonly UserAccount[] accounts;
         private readonly ICloudApi[] apis;
+        private readonly IViewerFactory viewerFactory;
 
-        public MainForm(ICloudApi[] apis)
+        public MainForm(ICloudApi[] apis, IViewerFactory viewerFactory)
         {
             this.apis = apis;
+            this.viewerFactory = viewerFactory;
             accounts = apis.SelectMany(x => x.Drive.LoadAccounts()).ToArray();
             InitializeComponent();
             InitView();
@@ -25,20 +28,21 @@ namespace CloudDisksAggregatorUI.UI
 
         private void InitView()
         {
-            optionPanels = new[] {addDiskSelectPanel};
+            optionPanels = new[] { addDiskSelectPanel };
         }
 
         private void OnSelectDriveButton_Click(object sender, EventArgs e)
         {
             HideAllPanels();
-            var engine = (ICloudDriveEngine) ((Button) sender).Tag;
-            controlPanel.Controls.Add(new CloudContentControl(new[] {engine}));
+            var engine = (ICloudDriveEngine)((Button)sender).Tag;
+            controlPanel.Controls.Add(new CloudContentControl(new[] { engine }, viewerFactory));
         }
 
         private void OnAllButton_Click(object sender, EventArgs e)
         {
             HideAllPanels();
-            controlPanel.Controls.Add(new CloudContentControl(accounts.Select(x => x.DriveEngine)));
+            controlPanel.Controls
+                .Add(new CloudContentControl(accounts.Select(x => x.DriveEngine), viewerFactory));
         }
 
         private void HideAllPanels()
@@ -69,8 +73,8 @@ namespace CloudDisksAggregatorUI.UI
         private void OnNewDriveButton_Click(object sender, EventArgs e)
         {
             HideAllPanels();
-            var drive = (ICloudDriveObject) ((Button) sender).Tag;
-            var addDriveControl = new AddNewCloudControl {Dock = DockStyle.Fill};
+            var drive = (ICloudDriveObject)((Button)sender).Tag;
+            var addDriveControl = new AddNewCloudControl { Dock = DockStyle.Fill };
             addDriveControl.AddingSucceeded += OnAddNewDrive;
             controlPanel.Controls.Add(addDriveControl);
             drive.AddNewAccount(addDriveControl);

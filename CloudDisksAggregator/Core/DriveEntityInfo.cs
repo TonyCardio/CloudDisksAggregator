@@ -29,5 +29,7 @@ namespace CloudDisksAggregator.Core
                 ? (entityName, nameAndExpansion.Last())
                 : (entityName, "Dir");
         }
+
+        public bool IsDirectory => Expansion == "Dir";
     }
 }

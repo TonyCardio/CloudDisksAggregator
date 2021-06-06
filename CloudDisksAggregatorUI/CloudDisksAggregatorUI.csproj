@@ -22,6 +22,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Update="FileContent\FileViewers\FileViewer.cs">
+        <SubType>UserControl</SubType>
+      </Compile>
+      <Compile Update="FileContent\FileViewers\ImageViewer.cs" />
+      <Compile Update="FileContent\FileViewers\TxtViewer.cs" />
       <Compile Update="Properties\Resources.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
@@ -30,7 +35,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Autofac" Version="6.1.0" />
+      <PackageReference Include="Apitron.PDF.Controls" Version="1.0.158" />
+      <PackageReference Include="Autofac" Version="6.2.0" />
     </ItemGroup>
 
     <ItemGroup>
