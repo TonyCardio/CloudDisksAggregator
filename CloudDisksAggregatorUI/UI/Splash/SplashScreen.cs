@@ -50,12 +50,13 @@ namespace CloudDisksAggregatorUI.UI.Splash
             initialPercentage += loadingSpeed;
             float percentage = initialPercentage / puddlePicture.Height * 100;
 
-            label1.Text = (int)percentage + " %";
+            label1.Text = (int)percentage % 100 + " %";
 
             hidePanel.Location = new Point(hidePanel.Location.X, hidePanel.Location.Y + loadingSpeed);
-            if (hidePanel.Location.Y > puddlePicture.Location.Y + puddlePicture.Height || until())
+            if (hidePanel.Location.Y > puddlePicture.Location.Y + puddlePicture.Height)
+                label1.Text = "∞";
+            if (until())
             {
-                label1.Text = "100 %";
                 timer2.Stop();
                 OnComplete?.Invoke();
             }

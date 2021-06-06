@@ -47,18 +47,16 @@ namespace CloudDisksAggregatorUI.UI
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.All;
         }
 
-        private void UploadForAllDrives(string filePath)
+        private async void UploadForAllDrives(string filePath)
         {
-            ShowSplashScreen(
-                Task.WhenAll(cloudDriveEngines.Select(x => x.Upload(filePath, ""))));
-            AddItemsFromAllDrives(currentDirectory);
+            await ShowSplashScreen(
+                 Task.WhenAll(cloudDriveEngines.Select(x => x.Upload(filePath, ""))));
         }
 
-        private void UploadFile(string filePath)
+        private async void UploadFile(string filePath)
         {
-            ShowSplashScreen(
-                currentDriveEngine.Upload(filePath, currentDirectory));
-            AddItems(currentDirectory, currentDriveEngine);
+            await ShowSplashScreen(
+                 currentDriveEngine.Upload(filePath, currentDirectory));
         }
 
         #endregion
@@ -108,8 +106,10 @@ namespace CloudDisksAggregatorUI.UI
 
         private async void ShowFileViewer(DriveEntityInfo driveEntity)
         {
+            var task = driveEntity.DriveEngine.Download(driveEntity.FullPath);
+            await ShowSplashScreen(task, false);
             var viewer = viewerFactory.Create(driveEntity.Name,
-                await driveEntity.DriveEngine.Download(driveEntity.FullPath));
+                await task);
             viewer.OnClose += CloseViewer;
             HideAll();
             Controls.Add(viewer);
@@ -126,10 +126,10 @@ namespace CloudDisksAggregatorUI.UI
 
         #region SplashAnimation
 
-        private async void ShowSplashScreen(Task task)
+        private async Task ShowSplashScreen(Task task, bool showAllAfter = true)
         {
             var screen = new SplashControl(() => task.IsCompleted);
-            screen.OnComplete += CloseSplashScreen;
+            screen.OnComplete += () => CloseSplashScreen(showAllAfter);
             HideAll();
             Controls.Add(screen);
             screen.SizeChange();
@@ -137,10 +137,11 @@ namespace CloudDisksAggregatorUI.UI
             await task;
         }
 
-        private void CloseSplashScreen()
+        private void CloseSplashScreen(bool showAllAfter)
         {
             Controls.RemoveByKey("SplashControl");
-            ShowAll();
+            if (showAllAfter)
+                ShowAll();
         }
 
         #endregion
@@ -152,12 +153,12 @@ namespace CloudDisksAggregatorUI.UI
             if (currentDirectory != catalogPath)
                 AddFolderBtn(catalogEntity);
             var task = driveEngine.GetCatalogContent(catalogPath);
-            ShowSplashScreen(task);
+            await ShowSplashScreen(task);
             var items = await task;
             viewContentList?.Items.AddRange(items.Select(CreateViewItem).ToArray());
         }
 
-        private void AddItemsFromAllDrives(string catalogPath = "/")
+        private async void AddItemsFromAllDrives(string catalogPath = "/")
         {
             viewContentList?.Items.Clear();
             var catalogEntity = new DriveEntityInfo(catalogPath, null);
@@ -171,7 +172,7 @@ namespace CloudDisksAggregatorUI.UI
                     viewContentList?.Items.AddRange(items.Select(CreateViewItem).ToArray());
                 }
             });
-            ShowSplashScreen(task);
+            await ShowSplashScreen(task);
         }
 
         private static ListViewItem CreateViewItem(DriveEntityInfo driveEntity)
