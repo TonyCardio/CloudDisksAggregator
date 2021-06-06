@@ -68,10 +68,7 @@ namespace CloudDisksAggregatorUI.UI
             if (driveEntity.IsDirectory)
                 ChangeDirectory(driveEntity);
             else
-            {
                 ShowFileViewer(driveEntity);
-            }
-
         }
 
         private void ChangeDirectory(DriveEntityInfo driveEntity)

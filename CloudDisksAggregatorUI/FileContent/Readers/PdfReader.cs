@@ -7,7 +7,7 @@ namespace CloudDisksAggregatorUI.FileContent.Readers
     {
         public Document FromBytes(byte[] bytes)
         {
-            return new(new MemoryStream(bytes));
+            return new Document(new MemoryStream(bytes));
         }
     }
 }
