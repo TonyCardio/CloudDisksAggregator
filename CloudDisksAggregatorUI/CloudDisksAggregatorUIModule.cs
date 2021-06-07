@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using CloudDisksAggregatorInfrastructure.InMemoryJsonStorage;
 using CloudDisksAggregatorUI.FileContent.FileViewers;
 using CloudDisksAggregatorUI.FileContent.Readers;
 
@@ -15,6 +16,8 @@ namespace CloudDisksAggregatorUI
             builder.RegisterAssemblyTypes(typeof(FileViewer).Assembly)
                 .Where(t => t.IsSubclassOf(typeof(FileViewer)))
                 .As<FileViewer>();
+            builder.RegisterGeneric(typeof(SimpleInMemoryJsonStorage<>))
+                .As(typeof(IInMemoryJsonStorage<>));
         }
     }
 }
