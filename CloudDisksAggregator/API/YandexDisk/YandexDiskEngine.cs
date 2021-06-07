@@ -12,7 +12,7 @@ using YandexDisk.Client.Protocol;
 
 namespace CloudDisksAggregator.API.YandexDisk
 {
-    public class YandexDiskEngine : ICloudDriveEngine
+    internal class YandexDiskEngine : ICloudDriveEngine
     {
         private readonly IDiskApi diskApi;
         [JsonProperty] private readonly string userAccessToken;

@@ -5,7 +5,7 @@ using YandexDisk.Client.Protocol;
 
 namespace CloudDisksAggregator.Core
 {
-    public static class CatalogContentsMapper
+    internal static class CatalogContentsMapper
     {
         public static List<DriveEntityInfo> MapYandexCatalogContent(IEnumerable<Resource> catalogContent, 
             ICloudDriveEngine driveEngine)

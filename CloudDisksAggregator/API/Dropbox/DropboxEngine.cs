@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace CloudDisksAggregator.API.Dropbox
 {
-    public class DropboxEngine : ICloudDriveEngine
+    internal class DropboxEngine : ICloudDriveEngine
     {
         private readonly DropboxClient diskApi;
         [JsonProperty] private readonly string userAccessToken;

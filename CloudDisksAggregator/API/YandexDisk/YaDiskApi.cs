@@ -3,7 +3,7 @@ using CloudDisksAggregatorInfrastructure.InMemoryJsonStorage;
 
 namespace CloudDisksAggregator.API.YandexDisk
 {
-    public class YaDiskApi : ICloudApi
+    internal class YaDiskApi : ICloudApi
     {
         public ICloudDriveObject Drive { get; }
         public IResourceObject Resources { get; }

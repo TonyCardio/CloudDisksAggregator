@@ -4,7 +4,7 @@ using CloudDisksAggregator.Core;
 
 namespace CloudDisksAggregator.API.YandexDisk
 {
-    public class YaDiskResources : IResourceObject
+    internal class YaDiskResources : IResourceObject
     {
         public Bitmap MainLogo => YandexRes.yandexDiskMainLogo;
         public string DriveTypeName => "Yandex Disk";

@@ -7,7 +7,7 @@ using CloudDisksAggregator.Core;
 
 namespace CloudDisksAggregator.UI
 {
-    public partial class BrowserAuthControl : UserControl, ICustomAddingControl
+    internal partial class BrowserAuthControl : UserControl, ICustomAddingControl
     {
         private readonly Func<string, ICloudDriveEngine> createEngine;
         public event Action<UserAccount> AddingSucceeded;

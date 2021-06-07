@@ -5,7 +5,7 @@ using CloudDisksAggregatorInfrastructure.InMemoryJsonStorage;
 
 namespace CloudDisksAggregator.API.YandexDisk
 {
-    public class YaDiskCloudDrive : ICloudDriveObject
+    internal class YaDiskCloudDrive : ICloudDriveObject
     {
         private readonly IInMemoryJsonStorage<UserAccount> storage;
 
