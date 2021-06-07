@@ -33,7 +33,7 @@ namespace CloudDisksAggregatorInfrastructure.InMemoryJsonStorage
             File.WriteAllText(Path.Join(path, $"{Guid.NewGuid()}.json"), serialized);
         }
 
-        public IEnumerable<TValue> GelAllFromDirectory(string directoryName)
+        public IEnumerable<TValue> GetAllFromDirectory(string directoryName)
         {
             var path = Path.Combine(baseDirectory, directoryName);
             return Directory.GetFiles(path)

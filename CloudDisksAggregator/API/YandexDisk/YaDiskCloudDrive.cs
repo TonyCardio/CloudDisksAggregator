@@ -16,7 +16,7 @@ namespace CloudDisksAggregator.API.YandexDisk
 
         public IEnumerable<UserAccount> LoadAccounts()
         {
-            return storage.GelAllFromDirectory(YaDiskSettings.AccountsDirectoryName);
+            return storage.GetAllFromDirectory(YaDiskSettings.AccountsDirectoryName);
         }
 
         public void AddNewAccount(AddNewCloudControl control)

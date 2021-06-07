@@ -5,6 +5,6 @@ namespace CloudDisksAggregatorInfrastructure.InMemoryJsonStorage
     public interface IInMemoryJsonStorage<TValue>
     {
         void Add(TValue value, string directoryName);
-        IEnumerable<TValue> GelAllFromDirectory(string directoryName);
+        IEnumerable<TValue> GetAllFromDirectory(string directoryName);
     }
 }

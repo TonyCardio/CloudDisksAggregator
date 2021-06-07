@@ -16,7 +16,7 @@ namespace CloudDisksAggregator.API.Dropbox
 
         public IEnumerable<UserAccount> LoadAccounts()
         {
-            return storage.GelAllFromDirectory(DropboxSettings.AccountsDirectoryName);
+            return storage.GetAllFromDirectory(DropboxSettings.AccountsDirectoryName);
         }
 
         public void AddNewAccount(AddNewCloudControl control)
