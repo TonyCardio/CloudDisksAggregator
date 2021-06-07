@@ -9,5 +9,7 @@ namespace CloudDisksAggregator.API.Dropbox
 
         public static string AuthUrl =>
             DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppId, RedirectUrl).AbsoluteUri;
+
+        public static string AccountsDirectoryName => "dropbox_data";
     }
 }

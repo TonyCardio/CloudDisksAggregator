@@ -1,4 +1,5 @@
 ﻿using CloudDisksAggregator.Core;
+using CloudDisksAggregatorInfrastructure.InMemoryJsonStorage;
 
 namespace CloudDisksAggregator.API.YandexDisk
 {
@@ -7,9 +8,9 @@ namespace CloudDisksAggregator.API.YandexDisk
         public ICloudDriveObject Drive { get; }
         public IResourceObject Resources { get; }
 
-        public YaDiskApi()
+        public YaDiskApi(IInMemoryJsonStorage<UserAccount> storage)
         {
-            Drive = new YaDiskCloudDrive();
+            Drive = new YaDiskCloudDrive(storage);
             Resources = new YaDiskResources();
         }
     }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using CloudDisksAggregator.Core;
+using Newtonsoft.Json;
 using YandexDisk.Client;
 using YandexDisk.Client.Clients;
 using YandexDisk.Client.Http;
@@ -14,9 +15,11 @@ namespace CloudDisksAggregator.API.YandexDisk
     public class YandexDiskEngine : ICloudDriveEngine
     {
         private readonly IDiskApi diskApi;
+        [JsonProperty] private readonly string userAccessToken;
 
         public YandexDiskEngine(string userAccessToken)
         {
+            this.userAccessToken = userAccessToken;
             diskApi = new DiskHttpApi(userAccessToken);
         }
 
