@@ -134,7 +134,19 @@ namespace CloudDisksAggregatorUI.UI
             Controls.Add(screen);
             screen.SizeChange();
             screen.Show();
-            await task;
+
+            try
+            {
+                await task;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(
+                    e.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private void CloseSplashScreen(bool showAllAfter)
