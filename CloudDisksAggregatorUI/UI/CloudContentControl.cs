@@ -1,5 +1,6 @@
 ﻿using CloudDisksAggregator.Core;
 using CloudDisksAggregatorUI.FileContent;
+using CloudDisksAggregatorUI.UI.ContextMenu;
 using CloudDisksAggregatorUI.UI.Splash;
 using System;
 using System.Collections.Generic;
@@ -14,21 +15,28 @@ namespace CloudDisksAggregatorUI.UI
     {
         private readonly IViewerFactory viewerFactory;
         private readonly List<ICloudDriveEngine> cloudDriveEngines;
+        private readonly ItemContextMenu itemContextMenu;
         private string currentDirectory;
         private ICloudDriveEngine currentDriveEngine;
 
         public CloudContentControl(IEnumerable<ICloudDriveEngine> cloudDriveEngines,
             IViewerFactory viewerFactory)
         {
-            this.viewerFactory = viewerFactory;
             InitializeComponent();
             Dock = DockStyle.Fill;
+            AllowDrop = true;
+
+            this.viewerFactory = viewerFactory;
             this.cloudDriveEngines = cloudDriveEngines.ToList();
+            itemContextMenu = new ItemContextMenu();
+
             AddItemsFromAllDrives();
+
             currentDirectory = "/";
             Name = "CloudContentControl";
-            AllowDrop = true;
-            viewContentList.ItemActivate += ViewContentList_ItemActivate;
+
+            viewContentList.ItemActivate += (s, e) => ItemClick();
+            viewContentList.MouseUp += ViewContentList_MouseUp;
             DragEnter += CloudContentControl_DragEnter;
             DragDrop += CloudContentControl_DragDrop;
         }
@@ -63,9 +71,9 @@ namespace CloudDisksAggregatorUI.UI
 
         #region Navigation
 
-        private void ViewContentList_ItemActivate(object sender, EventArgs e)
+        private void ItemClick()
         {
-            var driveEntity = (DriveEntityInfo)viewContentList.SelectedItems[0].Tag;
+            var driveEntity = (DriveEntityInfo)viewContentList.FocusedItem.Tag;
             if (driveEntity.IsDirectory)
                 ChangeDirectory(driveEntity);
             else
@@ -142,6 +150,24 @@ namespace CloudDisksAggregatorUI.UI
             Controls.RemoveByKey("SplashControl");
             if (showAllAfter)
                 ShowAll();
+        }
+
+        #endregion
+
+        #region ContextMenu
+
+        private void ViewContentList_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (viewContentList.FocusedItem.Bounds.Contains(e.Location)) ShowItemMenu();
+            }
+        }
+
+        private void ShowItemMenu()
+        {
+            var driveEntity = (DriveEntityInfo)viewContentList.FocusedItem.Tag;
+            itemContextMenu.Show(driveEntity, Cursor.Position);
         }
 
         #endregion
