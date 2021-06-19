@@ -16,21 +16,36 @@ namespace CloudDisksAggregatorUI.UI
         private readonly List<ICloudDriveEngine> cloudDriveEngines;
         private string currentDirectory;
         private ICloudDriveEngine currentDriveEngine;
+        private readonly Dictionary<ICloudDriveEngine, string> driveNames;
+        private Dictionary<ICloudDriveEngine, ListView> listViews = new Dictionary<ICloudDriveEngine, ListView>();
+        private Dictionary<ICloudDriveEngine, FlowLayoutPanel> folderPanels = new Dictionary<ICloudDriveEngine, FlowLayoutPanel>();
 
-        public CloudContentControl(IEnumerable<ICloudDriveEngine> cloudDriveEngines,
+        public CloudContentControl(IEnumerable<UserAccount> userAccounts,
             IViewerFactory viewerFactory)
         {
             this.viewerFactory = viewerFactory;
-            InitializeComponent();
-            Dock = DockStyle.Fill;
-            this.cloudDriveEngines = cloudDriveEngines.ToList();
-            AddItemsFromAllDrives();
+            InitializeControl();
+            driveNames = userAccounts.ToDictionary(x => x.DriveEngine, x => x.Name);
+            cloudDriveEngines = userAccounts.Select(x => x.DriveEngine).ToList();
+            
+            components = new System.ComponentModel.Container();
+            var resources 
+                = new System.ComponentModel.ComponentResourceManager(typeof(CloudContentControl));
+            
+            foreach (var driveEngine in cloudDriveEngines)
+            {
+                var (listView, folderPanel) = initializeDrivePanel(components, resources);
+                listViews.Add(driveEngine, listView);
+                folderPanels.Add(driveEngine, folderPanel);
+                listViews[driveEngine].ItemActivate += ViewContentList_ItemActivate;
+                AddItemsFromAllDrives(driveEngine);
+            }
             currentDirectory = "/";
             Name = "CloudContentControl";
-            AllowDrop = true;
-            viewContentList.ItemActivate += ViewContentList_ItemActivate;
-            DragEnter += CloudContentControl_DragEnter;
-            DragDrop += CloudContentControl_DragDrop;
+            // AllowDrop = true;
+            // viewContentList.ItemActivate += ViewContentList_ItemActivate;
+            // DragEnter += CloudContentControl_DragEnter;
+            // DragDrop += CloudContentControl_DragDrop;
         }
 
         #region Upload
@@ -65,7 +80,8 @@ namespace CloudDisksAggregatorUI.UI
 
         private void ViewContentList_ItemActivate(object sender, EventArgs e)
         {
-            var driveEntity = (DriveEntityInfo)viewContentList.SelectedItems[0].Tag;
+            var driveEntity = (DriveEntityInfo)((ListView)sender).SelectedItems[0].Tag;
+            
             if (driveEntity.IsDirectory)
                 ChangeDirectory(driveEntity);
             else
@@ -75,29 +91,58 @@ namespace CloudDisksAggregatorUI.UI
         private void ChangeDirectory(DriveEntityInfo driveEntity)
         {
             if (driveEntity.Name == "")
-                AddItemsFromAllDrives(driveEntity.FullPath);
+                AddItemsFromAllDrives(driveEntity.DriveEngine, driveEntity.FullPath);
             else
             {
-                AddItems(driveEntity.FullPath, driveEntity.DriveEngine);
+                AddItemsFromAllDrives( driveEntity.DriveEngine, driveEntity.FullPath);
                 currentDriveEngine = driveEntity.DriveEngine;
             }
             currentDirectory = driveEntity.FullPath;
         }
 
+        private void SearchBox_Press(object sender, EventArgs e)
+        {
+            var searcher = (SearchBox) sender;
+            var text = searcher.Text;
+
+            foreach (var driveEngine in cloudDriveEngines)
+            {
+                var items = SearchAllMatches(driveEngine, text);
+                AddItems(items, driveEngine);
+            }
+            // var driveEntity = cloudDriveEngines[0];
+            // var items = SearchAllMatches(driveEntity, text);
+            
+        }
+
+        private async Task AddItems(Task<List<DriveEntityInfo>> items, ICloudDriveEngine driveEntity)
+        {
+            listViews[driveEntity]?.Items.Clear();
+            var elements = await items;
+            listViews[driveEntity]?.Items.AddRange(elements.Select(CreateViewItem).ToArray());
+        }
+        
+        private async Task<List<DriveEntityInfo>> SearchAllMatches(ICloudDriveEngine driveEntity, string text)
+        {
+            var task = driveEntity?.Search(text);
+            await ShowSplashScreen(task);
+            return await task;
+        }
+        
         private void DirectoryBtn_Click(object sender, EventArgs e)
         {
             var btn = (Button)sender;
             var driveEntity = (DriveEntityInfo)btn.Tag;
-            RemoveAfter(btn, currentDirectory != driveEntity.FullPath);
+            RemoveAfter(btn, driveEntity.DriveEngine, currentDirectory != driveEntity.FullPath);
             ChangeDirectory(driveEntity);
         }
 
-        private void RemoveAfter(Control control, bool itself)
+        private void RemoveAfter(Control control, ICloudDriveEngine driveEntity, bool itself)
         {
-            var index = folderPanel.Controls.IndexOf(control);
+            var index = folderPanels[driveEntity].Controls.IndexOf(control);
             if (!itself) index += 1;
-            var count = folderPanel.Controls.Count;
-            for (var i = count - 1; i >= index; i--) folderPanel.Controls.RemoveAt(i);
+            var count = folderPanels[driveEntity].Controls.Count;
+            for (var i = count - 1; i >= index; i--) folderPanels[driveEntity].Controls.RemoveAt(i);
         }
 
         #endregion
@@ -146,31 +191,28 @@ namespace CloudDisksAggregatorUI.UI
 
         #endregion
 
-        private async void AddItems(string catalogPath, ICloudDriveEngine driveEngine)
+        // private async void AddItems(string catalogPath, ICloudDriveEngine driveEngine)
+        // {
+        //     viewContentList?.Items.Clear();
+        //     var catalogEntity = new DriveEntityInfo(catalogPath, driveEngine);
+        //     if (currentDirectory != catalogPath)
+        //         AddFolderBtn(catalogEntity);
+        //     var task = driveEngine.GetCatalogContent(catalogPath);
+        //     await ShowSplashScreen(task);
+        //     var items = await task;
+        //     viewContentList?.Items.AddRange(items.Select(CreateViewItem).ToArray());
+        // }
+
+        private async void AddItemsFromAllDrives(ICloudDriveEngine driveEngine, string catalogPath = "/")
         {
-            viewContentList?.Items.Clear();
+            listViews[driveEngine]?.Items.Clear();
             var catalogEntity = new DriveEntityInfo(catalogPath, driveEngine);
             if (currentDirectory != catalogPath)
-                AddFolderBtn(catalogEntity);
-            var task = driveEngine.GetCatalogContent(catalogPath);
-            await ShowSplashScreen(task);
-            var items = await task;
-            viewContentList?.Items.AddRange(items.Select(CreateViewItem).ToArray());
-        }
-
-        private async void AddItemsFromAllDrives(string catalogPath = "/")
-        {
-            viewContentList?.Items.Clear();
-            var catalogEntity = new DriveEntityInfo(catalogPath, null);
-            if (currentDirectory != catalogPath)
-                AddFolderBtn(catalogEntity);
+                AddFolderBtn(catalogEntity, driveNames[driveEngine]);
             var task = Task.Run(async () =>
             {
-                foreach (var engine in cloudDriveEngines)
-                {
-                    var items = await engine.GetCatalogContent(catalogPath);
-                    viewContentList?.Items.AddRange(items.Select(CreateViewItem).ToArray());
-                }
+                var items = await driveEngine.GetCatalogContent(catalogPath);
+                listViews[driveEngine]?.Items.AddRange(items.Select(CreateViewItem).ToArray());
             });
             await ShowSplashScreen(task);
         }

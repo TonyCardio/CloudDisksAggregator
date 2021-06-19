@@ -35,14 +35,15 @@ namespace CloudDisksAggregatorUI.UI
         {
             HideAllPanels();
             var engine = (ICloudDriveEngine)((Button)sender).Tag;
-            controlPanel.Controls.Add(new CloudContentControl(new[] { engine }, viewerFactory));
+            controlPanel.Controls.Add(new CloudContentControl(
+                accounts.Where(x => x.DriveEngine.Equals(engine)), viewerFactory));
         }
 
         private void OnAllButton_Click(object sender, EventArgs e)
         {
             HideAllPanels();
             controlPanel.Controls
-                .Add(new CloudContentControl(accounts.Select(x => x.DriveEngine), viewerFactory));
+                .Add(new CloudContentControl(accounts.Select(x => x), viewerFactory));
         }
 
         private void HideAllPanels()
