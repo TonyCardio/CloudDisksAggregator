@@ -55,5 +55,12 @@ namespace CloudDisksAggregator.API.Dropbox
             return CatalogContentsMapper.MapDropboxCatalogContent(
                 (await diskApi.Files.ListFolderAsync(pathToCatalog)).Entries, this);
         }
+        
+        private async Task<List<DriveEntityInfo>> GetFlatList() 
+            => CatalogContentsMapper.MapDropboxCatalogContent(
+                (await diskApi.Files.ListFolderAsync("", true)).Entries, this);
+
+        public async Task<List<DriveEntityInfo>> Search(string searchLine) 
+            => EntityFinder.Search(searchLine, await GetFlatList());
     }
 }
