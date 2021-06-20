@@ -19,13 +19,15 @@ namespace CloudDisksAggregator.API.Dropbox
             return storage.GetAllFromDirectory(DropboxSettings.AccountsDirectoryName);
         }
 
-        public void AddNewAccount(AddNewCloudControl control)
+        public IAddingCloudEventHandler AddNewAccount(AddNewCloudControl control)
         {
-            control.AddingSucceeded += OnSaveNewAccount;
-            control.AddChildAddingControl(new BrowserAuthControl(
+            var browser = new BrowserAuthControl(
                 DropboxSettings.AuthUrl,
                 token => new DropboxEngine(token)
-            ));
+            );
+            browser.AddingSucceeded += OnSaveNewAccount;
+            control.AddChildControl(browser);
+            return browser;
         }
 
         private void OnSaveNewAccount(UserAccount account)
