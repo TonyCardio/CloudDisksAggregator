@@ -28,14 +28,14 @@ namespace CloudDisksAggregatorUI.UI
 
         private void InitView()
         {
-            optionPanels = new[] { addDiskSelectPanel };
+            optionPanels = new Control[] {addDiskSelectPanel, helpPanel};
         }
 
         private void OnSelectDriveButton_Click(object sender, EventArgs e)
         {
             HideAllPanels();
-            var engine = (ICloudDriveEngine)((Button)sender).Tag;
-            controlPanel.Controls.Add(new CloudContentControl(new[] { engine }, viewerFactory));
+            var engine = (ICloudDriveEngine) ((Button) sender).Tag;
+            controlPanel.Controls.Add(new CloudContentControl(new[] {engine}, viewerFactory));
         }
 
         private void OnAllButton_Click(object sender, EventArgs e)
@@ -91,6 +91,12 @@ namespace CloudDisksAggregatorUI.UI
         }
 
         #endregion
+
+        private void OnHelpButton_Click(object sender, EventArgs e)
+        {
+            HideAllPanels();
+            helpPanel.Show();
+        }
 
         private void RemoveControlByKey(string key)
         {
