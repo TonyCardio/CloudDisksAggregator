@@ -72,7 +72,7 @@ namespace CloudDisksAggregator.API.YandexDisk
             return entities;
         }
         
-        public async Task<List<DriveEntityInfo>> Search(string searchLine) 
-            => EntityFinder.Search(searchLine, await GetFlatList());
+        public async Task<List<DriveEntityInfo>> Search(string searchLine, string directory) 
+            => EntityFinder.Search(searchLine, await GetFlatList(directory));
     }
 }

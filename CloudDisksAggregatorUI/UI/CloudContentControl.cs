@@ -107,7 +107,9 @@ namespace CloudDisksAggregatorUI.UI
 
             foreach (var driveEngine in cloudDriveEngines)
             {
-                var items = SearchAllMatches(driveEngine, text);
+                var controlElements = folderPanels[driveEngine].Controls;
+                var currentDirectory = (DriveEntityInfo)controlElements[^1].Tag;
+                var items = SearchAllMatches(driveEngine, text, currentDirectory.FullPath);
                 AddItems(items, driveEngine);
             }
             // var driveEntity = cloudDriveEngines[0];
@@ -122,9 +124,9 @@ namespace CloudDisksAggregatorUI.UI
             listViews[driveEntity]?.Items.AddRange(elements.Select(CreateViewItem).ToArray());
         }
         
-        private async Task<List<DriveEntityInfo>> SearchAllMatches(ICloudDriveEngine driveEntity, string text)
+        private async Task<List<DriveEntityInfo>> SearchAllMatches(ICloudDriveEngine driveEntity, string text, string directory)
         {
-            var task = driveEntity?.Search(text);
+            var task = driveEntity?.Search(text, directory);
             await ShowSplashScreen(task);
             return await task;
         }
