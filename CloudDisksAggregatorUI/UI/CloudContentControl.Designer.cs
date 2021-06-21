@@ -137,11 +137,6 @@ namespace CloudDisksAggregatorUI.UI
         
         #region Код, автоматически созданный конструктором компонентов
 
-        /// <summary> 
-        /// Требуемый метод для поддержки конструктора — не изменяйте 
-        /// содержимое этого метода с помощью редактора кода.
-        /// </summary>
-
         private void InitializeControl()
         {
             Dock = DockStyle.Fill;
@@ -151,29 +146,6 @@ namespace CloudDisksAggregatorUI.UI
             DragDrop += CloudContentControl_DragDrop;
             Controls.Add(createSearchBox());
         }
-        
-        // private void InitializeComponent()
-        // {
-        //     var components = new System.ComponentModel.Container();
-        //     var resources 
-        //         = new System.ComponentModel.ComponentResourceManager(typeof(CloudContentControl));
-        //     var searchBox = createSearchBox();
-        //     var iconList = createImageList(components, resources);
-        //     this.viewContentList = createListView(iconList);
-        //     this.folderPanel = createFolderPanel();
-        //     this.SuspendLayout();
-        //     
-        //     this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-        //     this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        //     this.Controls.Add(folderPanel);
-        //     this.Controls.Add(viewContentList);
-        //     this.Controls.Add(searchBox);
-        //     this.Name = "CloudContentControl";
-        //     this.Size = new System.Drawing.Size(700, 400);
-        //     this.ResumeLayout(false);
-        //     this.PerformLayout();
-        //     this.AutoScroll = true;
-        // }
 
         #endregion
 
@@ -199,10 +171,5 @@ namespace CloudDisksAggregatorUI.UI
             directoryBtn.Click += DirectoryBtn_Click;
             folderPanels[driveEntity.DriveEngine].Controls.Add(directoryBtn);
         }
-
-        // private SearchBox searchBox;
-        // private System.Windows.Forms.ListView viewContentList;
-        // private System.Windows.Forms.ImageList iconList;
-        // private System.Windows.Forms.FlowLayoutPanel folderPanel;
     }
 }

@@ -42,10 +42,6 @@ namespace CloudDisksAggregatorUI.UI
             }
             currentDirectory = "/";
             Name = "CloudContentControl";
-            // AllowDrop = true;
-            // viewContentList.ItemActivate += ViewContentList_ItemActivate;
-            // DragEnter += CloudContentControl_DragEnter;
-            // DragDrop += CloudContentControl_DragDrop;
         }
 
         #region Upload
@@ -112,8 +108,6 @@ namespace CloudDisksAggregatorUI.UI
                 var items = SearchAllMatches(driveEngine, text, currentDirectory.FullPath);
                 AddItems(items, driveEngine);
             }
-            // var driveEntity = cloudDriveEngines[0];
-            // var items = SearchAllMatches(driveEntity, text);
             
         }
 
@@ -192,18 +186,6 @@ namespace CloudDisksAggregatorUI.UI
         }
 
         #endregion
-
-        // private async void AddItems(string catalogPath, ICloudDriveEngine driveEngine)
-        // {
-        //     viewContentList?.Items.Clear();
-        //     var catalogEntity = new DriveEntityInfo(catalogPath, driveEngine);
-        //     if (currentDirectory != catalogPath)
-        //         AddFolderBtn(catalogEntity);
-        //     var task = driveEngine.GetCatalogContent(catalogPath);
-        //     await ShowSplashScreen(task);
-        //     var items = await task;
-        //     viewContentList?.Items.AddRange(items.Select(CreateViewItem).ToArray());
-        // }
 
         private async void AddItemsFromAllDrives(ICloudDriveEngine driveEngine, string catalogPath = "/")
         {
