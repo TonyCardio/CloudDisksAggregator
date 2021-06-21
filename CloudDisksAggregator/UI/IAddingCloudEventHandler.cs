@@ -4,7 +4,7 @@ using CloudDisksAggregator.Core;
 
 namespace CloudDisksAggregator.UI
 {
-    public interface ICustomAddingControl
+    public interface IAddingCloudEventHandler
     {
         event Action<UserAccount> AddingSucceeded;
     }
