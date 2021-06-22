@@ -1,5 +1,6 @@
 ﻿using CloudDisksAggregator.Core;
 using CloudDisksAggregatorUI.FileContent;
+using CloudDisksAggregatorUI.UI.ContextMenu;
 using CloudDisksAggregatorUI.UI.Splash;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,13 @@ namespace CloudDisksAggregatorUI.UI
     {
         private readonly IViewerFactory viewerFactory;
         private readonly List<ICloudDriveEngine> cloudDriveEngines;
+        private readonly ItemContextMenu itemContextMenu;
+        private readonly ControlContextMenu controlContextMenu;
         private SplashControl splashScreen;
         private string currentDirectory;
         private ICloudDriveEngine currentDriveEngine;
         private readonly Dictionary<ICloudDriveEngine, string> driveNames;
+        private ListView currentListView;
         private Dictionary<ICloudDriveEngine, ListView> listViews = new Dictionary<ICloudDriveEngine, ListView>();
         private Dictionary<ICloudDriveEngine, FlowLayoutPanel> folderPanels = new Dictionary<ICloudDriveEngine, FlowLayoutPanel>();
 
@@ -25,6 +29,8 @@ namespace CloudDisksAggregatorUI.UI
             IViewerFactory viewerFactory)
         {
             this.viewerFactory = viewerFactory;
+            itemContextMenu = new ItemContextMenu();
+            controlContextMenu = new ControlContextMenu();
             InitializeControl();
             SizeChanged += (s, e) => splashScreen?.SizeChange();
             driveNames = userAccounts.ToDictionary(x => x.DriveEngine, x => x.Name);
@@ -40,6 +46,7 @@ namespace CloudDisksAggregatorUI.UI
                 listViews.Add(driveEngine, listView);
                 folderPanels.Add(driveEngine, folderPanel);
                 listViews[driveEngine].ItemActivate += ViewContentList_ItemActivate;
+                listViews[driveEngine].MouseUp += ViewContentList_MouseUp;
                 AddItems(driveEngine);
             }
             currentDirectory = "/";
@@ -111,7 +118,7 @@ namespace CloudDisksAggregatorUI.UI
 
         private void ViewContentList_ItemActivate(object sender, EventArgs e)
         {
-            var driveEntity = (DriveEntityInfo)((ListView)sender).SelectedItems[0].Tag;
+            var driveEntity = (DriveEntityInfo)((ListView)sender).FocusedItem.Tag;
 
             if (driveEntity.IsDirectory)
                 ChangeDirectory(driveEntity);
@@ -200,6 +207,33 @@ namespace CloudDisksAggregatorUI.UI
             Controls.RemoveByKey("SplashControl");
             if (showAllAfter)
                 ShowAll();
+        }
+
+        #endregion
+
+        #region ContextMenu
+
+        private void ViewContentList_MouseUp(object sender, MouseEventArgs e)
+        {
+            currentListView = (ListView)sender;
+            if (e.Button == MouseButtons.Right)
+            {
+                if (currentListView.FocusedItem.Bounds.Contains(e.Location))
+                    ShowItemMenu((DriveEntityInfo)currentListView.FocusedItem.Tag);
+                else
+                    controlContextMenu.Show(Cursor.Position);
+            }
+        }
+
+        private void ShowItemMenu(DriveEntityInfo driveEntity)
+        {
+            itemContextMenu.Show(driveEntity, Cursor.Position);
+        }
+
+        private void InitControlContextMenu()
+        {
+            controlContextMenu.OnUpdate += () =>
+                AddItems(((DriveEntityInfo)currentListView.FocusedItem.Tag).DriveEngine, currentDirectory);
         }
 
         #endregion
