@@ -129,6 +129,7 @@ namespace CloudDisksAggregatorUI.UI
             AutoScroll = true;
             AllowDrop = true;
             InitControlContextMenu();
+            InitItemContextMenu();
             AutoScroll = false;
             DragEnter += CloudContentControl_DragEnter;
             DragDrop += CloudContentControl_DragDrop;

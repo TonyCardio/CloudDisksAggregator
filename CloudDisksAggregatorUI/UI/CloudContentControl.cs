@@ -230,6 +230,16 @@ namespace CloudDisksAggregatorUI.UI
             itemContextMenu.Show(driveEntity, Cursor.Position);
         }
 
+        private void InitItemContextMenu()
+        {
+            itemContextMenu.OnDelete += async entity =>
+               await ShowSplashScreen(((DriveEntityInfo)currentListView.FocusedItem.Tag).DriveEngine.Delete(entity.FullPath));
+            itemContextMenu.OnRename += async (name, entity) =>
+               await ShowSplashScreen(((DriveEntityInfo)currentListView.FocusedItem.Tag).DriveEngine.RenameEntity(entity.FullPath, name));
+            itemContextMenu.OnDownload += async (path, entity) =>
+              await ShowSplashScreen(((DriveEntityInfo)currentListView.FocusedItem.Tag).DriveEngine.Save(entity.FullPath, path));
+        }
+
         private void InitControlContextMenu()
         {
             controlContextMenu.OnUpdate += () =>
