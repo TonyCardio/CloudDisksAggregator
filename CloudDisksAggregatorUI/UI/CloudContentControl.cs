@@ -15,6 +15,7 @@ namespace CloudDisksAggregatorUI.UI
     {
         private readonly IViewerFactory viewerFactory;
         private readonly List<ICloudDriveEngine> cloudDriveEngines;
+        private SplashControl splashScreen;
         private readonly ItemContextMenu itemContextMenu;
         private string currentDirectory;
         private ICloudDriveEngine currentDriveEngine;
@@ -28,6 +29,7 @@ namespace CloudDisksAggregatorUI.UI
             this.viewerFactory = viewerFactory;
             itemContextMenu = new ItemContextMenu();
             InitializeControl();
+            SizeChanged += (s, e) => splashScreen?.SizeChange();
             driveNames = userAccounts.ToDictionary(x => x.DriveEngine, x => x.Name);
             cloudDriveEngines = userAccounts.Select(x => x.DriveEngine).ToList();
 
@@ -177,13 +179,12 @@ namespace CloudDisksAggregatorUI.UI
 
         private async Task ShowSplashScreen(Task task, bool showAllAfter = true)
         {
-            var screen = new SplashControl(() => task.IsCompleted);
-            screen.OnComplete += () => CloseSplashScreen(showAllAfter);
+            splashScreen = new SplashControl(() => task.IsCompleted);
+            splashScreen.OnComplete += () => CloseSplashScreen(showAllAfter);
             HideAll();
-            Controls.Add(screen);
-            screen.SizeChange();
-            screen.Show();
-
+            Controls.Add(splashScreen);
+            splashScreen.SizeChange();
+            splashScreen.Show();
             try
             {
                 await task;

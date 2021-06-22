@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using CloudDisksAggregator.Core;
@@ -25,9 +24,11 @@ namespace CloudDisksAggregatorUI.UI
             }
             base.Dispose(disposing);
         }
-        
+
+        private readonly TableLayoutPanel controlsLayoutPanel = new TableLayoutPanel() { ColumnCount = 1, Dock = DockStyle.Fill, AutoScroll = true };
+
         #region Инициализация Control-а
-        
+
         private SearchBox СreateSearchBox()
         {
             var searchBox = new SearchBox()
@@ -68,7 +69,7 @@ namespace CloudDisksAggregatorUI.UI
                 UseCompatibleStateImageBehavior = false,
             };
         }
-        
+
         private ImageList СreateImageList(IContainer components, ComponentResourceManager resources)
         {
             var imageList = new ImageList(components)
@@ -104,19 +105,22 @@ namespace CloudDisksAggregatorUI.UI
             var folderPanel = CreateFolderPanel();
             var panel = new Panel()
             {
-                Dock = DockStyle.Bottom,
+                Dock = DockStyle.Fill,
                 Location = new Point(0, 0),
                 Name = "panel",
                 Size = new Size(700, 600),
                 TabIndex = 0,
                 Controls =
                 {
-                    folderPanel,
                     viewContentList,
+                    folderPanel
                 }
             };
-            Controls.Add(panel);
-            
+
+            controlsLayoutPanel.RowCount++;
+            controlsLayoutPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            controlsLayoutPanel.Controls.Add(panel, 0, controlsLayoutPanel.RowCount - 1);
+
             return (viewContentList, folderPanel);
         }
         private void InitializeControl()
@@ -124,8 +128,12 @@ namespace CloudDisksAggregatorUI.UI
             Dock = DockStyle.Fill;
             AutoScroll = true;
             AllowDrop = true;
+            AutoScroll = false;
             DragEnter += CloudContentControl_DragEnter;
             DragDrop += CloudContentControl_DragDrop;
+
+            controlsLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            Controls.Add(controlsLayoutPanel);
             Controls.Add(СreateSearchBox());
         }
 
@@ -148,6 +156,7 @@ namespace CloudDisksAggregatorUI.UI
                 TabIndex = 1,
                 Text = driveEntity.Name.Equals("") ? driveName + " >" : driveEntity.Name + " >",
                 Tag = driveEntity,
+                AutoSize = true,
                 UseVisualStyleBackColor = true
             };
             directoryBtn.Click += DirectoryBtn_Click;
