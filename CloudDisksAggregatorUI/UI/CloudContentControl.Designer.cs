@@ -124,6 +124,7 @@ namespace CloudDisksAggregatorUI.UI
             Dock = DockStyle.Fill;
             AutoScroll = true;
             AllowDrop = true;
+            InitControlContextMenu();
             DragEnter += CloudContentControl_DragEnter;
             DragDrop += CloudContentControl_DragDrop;
             Controls.Add(СreateSearchBox());

@@ -13,7 +13,7 @@ namespace CloudDisksAggregatorUI.UI
             else
                 base.OnKeyDown(e);
         }
-        
+
         private void OnEvent() => Press?.Invoke(this, EventArgs.Empty);
     }
 }
