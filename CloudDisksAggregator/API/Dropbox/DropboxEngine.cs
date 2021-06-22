@@ -36,16 +36,18 @@ namespace CloudDisksAggregator.API.Dropbox
         public async Task<byte[]> Download(string pathToEntity)
         {
             var entity = new DriveEntityInfo(pathToEntity, this);
+            if (entity.IsDirectory)
+                return await (await diskApi.Files.DownloadZipAsync(entity.FullPath)).GetContentAsByteArrayAsync();
             return await (await diskApi.Files.DownloadAsync(entity.FullPath)).GetContentAsByteArrayAsync();
         }
-
-        public async Task Save(string pathToEntity, string pathToCatalogForSave = "")
+        
+        public async Task Save(string pathToEntity, string pathToCatalogForSave)
         {
             var data = await Download(pathToEntity);
-            if (pathToCatalogForSave.Equals(""))
-                pathToCatalogForSave = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             var entity = new DriveEntityInfo(pathToEntity, this);
-            var path = $"{pathToCatalogForSave}/{entity.Name}";
+            var path = entity.IsDirectory 
+                ? $"{pathToCatalogForSave}/{entity.Name}.zip" 
+                : $"{pathToCatalogForSave}/{entity.Name}";
             await File.WriteAllBytesAsync(path, data);
         }
 
@@ -56,11 +58,35 @@ namespace CloudDisksAggregator.API.Dropbox
                 (await diskApi.Files.ListFolderAsync(pathToCatalog)).Entries, this);
         }
         
+        public async Task Delete(string pathToEntity) => await diskApi.Files.DeleteV2Async(new DeleteArg(pathToEntity));
+        
+        private async Task MoveEntity(string pathToEntity, string whereToMove, string newName = "")
+        {
+            var entity = new DriveEntityInfo(pathToEntity, this);
+            var toPath = newName.Equals("") ? $"{whereToMove}/{entity.Name}" : $"{whereToMove}/{newName}";
+            try
+            {
+                await diskApi.Files.MoveV2Async(pathToEntity, toPath);
+            }
+            catch (ApiException<RelocationError> e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public async Task RenameEntity(string path, string newName)
+        {
+            path = Equals(path[0], '/') ? path : "/" + path;
+            var entity = new DriveEntityInfo(path, this);
+            await MoveEntity(path, entity.Parent, newName);
+        }
+        
         private async Task<List<DriveEntityInfo>> GetFlatList(string directory) 
             => CatalogContentsMapper.MapDropboxCatalogContent(
                 (await diskApi.Files.ListFolderAsync(directory, true)).Entries, this);
 
         public async Task<List<DriveEntityInfo>> Search(string searchLine, string directory) 
             => EntityFinder.Search(searchLine, await GetFlatList(directory));
+
     }
 }
