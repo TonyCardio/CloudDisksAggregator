@@ -43,10 +43,12 @@ namespace CloudDisksAggregatorUI.UI
             this.label1 = new System.Windows.Forms.Label();
             this.controlPanel = new System.Windows.Forms.Panel();
             this.addDiskSelectPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.helpPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.sideMenuPanel.SuspendLayout();
             this.logoPanel.SuspendLayout();
             this.controlPanel.SuspendLayout();
             this.addDiskSelectPanel.SuspendLayout();
+            this.helpPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // helpBtn
@@ -64,6 +66,7 @@ namespace CloudDisksAggregatorUI.UI
             this.helpBtn.Text = "Help";
             this.helpBtn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.helpBtn.UseVisualStyleBackColor = true;
+            this.helpBtn.Click += OnHelpButton_Click;
             // 
             // addNewBtn
             // 
@@ -143,6 +146,7 @@ namespace CloudDisksAggregatorUI.UI
             this.controlPanel.AutoScroll = true;
             this.controlPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(21)))), ((int)(((byte)(32)))));
             this.controlPanel.Controls.Add(this.addDiskSelectPanel);
+            this.controlPanel.Controls.Add(this.helpPanel);
             this.controlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.controlPanel.Location = new System.Drawing.Point(200, 0);
             this.controlPanel.Name = "controlPanel";
@@ -161,6 +165,34 @@ namespace CloudDisksAggregatorUI.UI
             this.addDiskSelectPanel.TabIndex = 0;
             this.addDiskSelectPanel.Visible = false;
             // 
+            // helpPanel
+            // 
+            this.helpPanel.AutoScroll = true;
+            this.helpPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.helpPanel.Name = "helpPanel";
+            this.helpPanel.Padding = new System.Windows.Forms.Padding(25, 25, 0, 0);
+            this.helpPanel.Size = new System.Drawing.Size(784, 761);
+            this.helpPanel.TabIndex = 0;
+            this.helpPanel.Visible = false;
+            var headerLabel = new Label();
+            
+            var contactLabel = new Label();
+            headerLabel.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+            contactLabel.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            headerLabel.Size = new System.Drawing.Size(400, 50);
+            contactLabel.Size = new System.Drawing.Size(400, 50);
+            contactLabel.Location = new Point(0,50);
+            headerLabel.Text="Cloud Disks Aggregator";
+            contactLabel.Text="for all questions, please write to disk.aggregator@yandex.ru";
+            headerLabel.ForeColor = Color.White;
+            contactLabel.ForeColor = Color.White;
+            
+            var pnl = new Panel();
+            pnl.Size = new Size(700,400);
+            pnl.Controls.Add(headerLabel);
+            pnl.Controls.Add(contactLabel);
+            this.helpPanel.Controls.Add(pnl);
+            //
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -177,8 +209,8 @@ namespace CloudDisksAggregatorUI.UI
             this.logoPanel.PerformLayout();
             this.controlPanel.ResumeLayout(false);
             this.addDiskSelectPanel.ResumeLayout(false);
+            this.helpPanel.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion
@@ -240,5 +272,6 @@ namespace CloudDisksAggregatorUI.UI
         private System.Windows.Forms.Button helpBtn;
         private System.Windows.Forms.Panel controlPanel;
         private System.Windows.Forms.FlowLayoutPanel addDiskSelectPanel;
+        private System.Windows.Forms.Panel helpPanel;
     }
 }

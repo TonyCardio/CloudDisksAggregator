@@ -19,13 +19,15 @@ namespace CloudDisksAggregator.API.YandexDisk
             return storage.GetAllFromDirectory(YaDiskSettings.AccountsDirectoryName);
         }
 
-        public void AddNewAccount(AddNewCloudControl control)
+        public IAddingCloudEventHandler AddNewAccount(AddNewCloudControl control)
         {
-            control.AddingSucceeded += OnSaveNewAccount;
-            control.AddChildAddingControl(new BrowserAuthControl(
+            var browser = new BrowserAuthControl(
                 YaDiskSettings.AuthUrl,
                 token => new YandexDiskEngine(token)
-            ));
+            );
+            browser.AddingSucceeded += OnSaveNewAccount;
+            control.AddChildControl(browser);
+            return browser;
         }
 
         private void OnSaveNewAccount(UserAccount account)

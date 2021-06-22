@@ -6,7 +6,6 @@ namespace CloudDisksAggregator.Core
     public interface ICloudDriveObject
     {
         IEnumerable<UserAccount> LoadAccounts();
-        void AddNewAccount(AddNewCloudControl control);
-        
+        IAddingCloudEventHandler AddNewAccount(AddNewCloudControl control);
     }
 }
