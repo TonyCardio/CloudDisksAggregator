@@ -15,11 +15,13 @@ namespace CloudDisksAggregatorUI.UI
     {
         private readonly IViewerFactory viewerFactory;
         private readonly List<ICloudDriveEngine> cloudDriveEngines;
-        private SplashControl splashScreen;
         private readonly ItemContextMenu itemContextMenu;
+        private readonly ControlContextMenu controlContextMenu;
+        private SplashControl splashScreen;
         private string currentDirectory;
         private ICloudDriveEngine currentDriveEngine;
         private readonly Dictionary<ICloudDriveEngine, string> driveNames;
+        private ListView currentListView;
         private Dictionary<ICloudDriveEngine, ListView> listViews = new Dictionary<ICloudDriveEngine, ListView>();
         private Dictionary<ICloudDriveEngine, FlowLayoutPanel> folderPanels = new Dictionary<ICloudDriveEngine, FlowLayoutPanel>();
 
@@ -28,6 +30,7 @@ namespace CloudDisksAggregatorUI.UI
         {
             this.viewerFactory = viewerFactory;
             itemContextMenu = new ItemContextMenu();
+            controlContextMenu = new ControlContextMenu();
             InitializeControl();
             SizeChanged += (s, e) => splashScreen?.SizeChange();
             driveNames = userAccounts.ToDictionary(x => x.DriveEngine, x => x.Name);
@@ -212,16 +215,25 @@ namespace CloudDisksAggregatorUI.UI
 
         private void ViewContentList_MouseUp(object sender, MouseEventArgs e)
         {
-            var currentList = (ListView)sender;
+            currentListView = (ListView)sender;
             if (e.Button == MouseButtons.Right)
             {
-                if (currentList.FocusedItem.Bounds.Contains(e.Location)) ShowItemMenu((DriveEntityInfo)currentList.FocusedItem.Tag);
+                if (currentListView.FocusedItem.Bounds.Contains(e.Location))
+                    ShowItemMenu((DriveEntityInfo)currentListView.FocusedItem.Tag);
+                else
+                    controlContextMenu.Show(Cursor.Position);
             }
         }
 
         private void ShowItemMenu(DriveEntityInfo driveEntity)
         {
             itemContextMenu.Show(driveEntity, Cursor.Position);
+        }
+
+        private void InitControlContextMenu()
+        {
+            controlContextMenu.OnUpdate += () =>
+                AddItems(((DriveEntityInfo)currentListView.FocusedItem.Tag).DriveEngine, currentDirectory);
         }
 
         #endregion
