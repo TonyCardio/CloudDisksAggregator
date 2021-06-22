@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CloudDisksAggregator.Core;
@@ -49,7 +50,6 @@ namespace CloudDisksAggregator.API.YandexDisk
                 Path.Combine(pathToCatalogForSave, entity.IsDirectory ? entity.Name + ".zip" : entity.Name));
         }
 
-
         public async Task<List<DriveEntityInfo>> GetCatalogContent(string pathToCatalog)
         {
             return CatalogContentsMapper.MapYandexCatalogContent(
@@ -78,5 +78,21 @@ namespace CloudDisksAggregator.API.YandexDisk
             var entity = new DriveEntityInfo(path, this);
             await MoveEntity(path, entity.Parent, newName);
         }
+        
+        private async Task<List<DriveEntityInfo>> GetFlatList(string pathToCatalog="/")
+        {
+            var entities = new List<DriveEntityInfo>();
+            foreach (var entity in await GetCatalogContent(pathToCatalog))
+            {
+                entities.Add(entity);
+                if (entity.Expansion.Equals("Dir"))
+                    entities = entities.Concat(await GetFlatList(entity.FullPath)).ToList();
+            }
+            return entities;
+        }
+        
+        public async Task<List<DriveEntityInfo>> Search(string searchLine, string directory) 
+            => EntityFinder.Search(searchLine, await GetFlatList(directory));
+
     }
 }

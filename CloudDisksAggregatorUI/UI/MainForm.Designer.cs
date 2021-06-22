@@ -197,7 +197,7 @@ namespace CloudDisksAggregatorUI.UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 761);
+            this.ClientSize = new System.Drawing.Size(950, 700);
             this.Controls.Add(this.controlPanel);
             this.Controls.Add(this.sideMenuPanel);
             this.Icon = Icon.FromHandle(global::CloudDisksAggregatorUI.Properties.Resources.appicon.GetHicon());
@@ -232,7 +232,7 @@ namespace CloudDisksAggregatorUI.UI
             btn.TabIndex = 1;
             btn.TabStop = false;
             btn.Text = acc.Name;
-            btn.Tag = acc.DriveEngine;
+            btn.Tag = acc;
             btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btn.UseVisualStyleBackColor = true;
             btn.Click += OnSelectDriveButton_Click;

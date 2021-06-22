@@ -80,5 +80,13 @@ namespace CloudDisksAggregator.API.Dropbox
             var entity = new DriveEntityInfo(path, this);
             await MoveEntity(path, entity.Parent, newName);
         }
+        
+        private async Task<List<DriveEntityInfo>> GetFlatList(string directory) 
+            => CatalogContentsMapper.MapDropboxCatalogContent(
+                (await diskApi.Files.ListFolderAsync(directory, true)).Entries, this);
+
+        public async Task<List<DriveEntityInfo>> Search(string searchLine, string directory) 
+            => EntityFinder.Search(searchLine, await GetFlatList(directory));
+
     }
 }
