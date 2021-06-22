@@ -41,15 +41,14 @@ namespace CloudDisksAggregator.API.YandexDisk
             await data.CopyToAsync(ms);
             return ms.ToArray();
         }
-
-        public async Task Save(string pathToEntity, string pathToCatalogForSave = "")
+        
+        public async Task Save(string pathToEntity, string pathToCatalogForSave)
         {
             var entity = new DriveEntityInfo(pathToEntity, this);
-            if (pathToCatalogForSave.Equals(""))
-                pathToCatalogForSave = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             await diskApi.Files.DownloadFileAsync(path: entity.FullPath,
-                Path.Combine(pathToCatalogForSave, entity.Name));
+                Path.Combine(pathToCatalogForSave, entity.IsDirectory ? entity.Name + ".zip" : entity.Name));
         }
+
 
         public async Task<List<DriveEntityInfo>> GetCatalogContent(string pathToCatalog)
         {
@@ -57,6 +56,27 @@ namespace CloudDisksAggregator.API.YandexDisk
                 (await diskApi.MetaInfo.GetInfoAsync(
                     new ResourceRequest {Path = pathToCatalog, Limit = 2147483647},
                     CancellationToken.None)).Embedded.Items, this);
+        }
+        
+        public async Task Delete(string pathToEntity) 
+            => await diskApi.Commands.DeleteAsync(new DeleteFileRequest {Path = pathToEntity});
+
+        private async Task MoveEntity(string pathToEntity, string whereToMove, string newName = "")
+        {
+            var entity = new DriveEntityInfo(pathToEntity, this);
+            var path = newName.Equals("") ? $"{whereToMove}/{entity.Name}" : $"{whereToMove}/{newName}";
+            await diskApi.Commands.MoveAsync(new MoveFileRequest
+            {
+                From = pathToEntity,
+                Overwrite = false,
+                Path = path
+            });
+        }
+
+        public async Task RenameEntity(string path, string newName)
+        {
+            var entity = new DriveEntityInfo(path, this);
+            await MoveEntity(path, entity.Parent, newName);
         }
     }
 }
