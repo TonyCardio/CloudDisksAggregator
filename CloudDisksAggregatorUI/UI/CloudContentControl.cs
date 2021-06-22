@@ -14,6 +14,7 @@ namespace CloudDisksAggregatorUI.UI
     {
         private readonly IViewerFactory viewerFactory;
         private readonly List<ICloudDriveEngine> cloudDriveEngines;
+        private SplashControl splashScreen;
         private string currentDirectory;
         private ICloudDriveEngine currentDriveEngine;
         private readonly Dictionary<ICloudDriveEngine, string> driveNames;
@@ -25,13 +26,14 @@ namespace CloudDisksAggregatorUI.UI
         {
             this.viewerFactory = viewerFactory;
             InitializeControl();
+            SizeChanged += (s, e) => splashScreen?.SizeChange();
             driveNames = userAccounts.ToDictionary(x => x.DriveEngine, x => x.Name);
             cloudDriveEngines = userAccounts.Select(x => x.DriveEngine).ToList();
-            
+
             components = new System.ComponentModel.Container();
-            var resources 
+            var resources
                 = new System.ComponentModel.ComponentResourceManager(typeof(CloudContentControl));
-            
+
             foreach (var driveEngine in cloudDriveEngines)
             {
                 var (listView, folderPanel) = InitializeDrivePanel(components, resources);
@@ -44,11 +46,11 @@ namespace CloudDisksAggregatorUI.UI
             Name = "CloudContentControl";
         }
 
-        # region Search
-        
+        #region Search
+
         private void SearchBox_Press(object sender, EventArgs e)
         {
-            var searcher = (SearchBox) sender;
+            var searcher = (SearchBox)sender;
             var text = searcher.Text;
 
             foreach (var driveEngine in cloudDriveEngines)
@@ -58,7 +60,7 @@ namespace CloudDisksAggregatorUI.UI
                 var items = SearchAllMatches(driveEngine, text, directory.FullPath);
                 AddItems(items, driveEngine);
             }
-            
+
         }
 
         private async Task AddItems(Task<List<DriveEntityInfo>> items, ICloudDriveEngine driveEntity)
@@ -67,16 +69,16 @@ namespace CloudDisksAggregatorUI.UI
             var elements = await items;
             listViews[driveEntity]?.Items.AddRange(elements.Select(CreateViewItem).ToArray());
         }
-        
+
         private async Task<List<DriveEntityInfo>> SearchAllMatches(ICloudDriveEngine driveEntity, string text, string directory)
         {
             var task = driveEntity?.Search(text, directory);
             await ShowSplashScreen(task);
             return await task;
         }
-        
-        # endregion
-        
+
+        #endregion
+
         #region Upload
 
         private void CloudContentControl_DragDrop(object sender, DragEventArgs e)
@@ -110,7 +112,7 @@ namespace CloudDisksAggregatorUI.UI
         private void ViewContentList_ItemActivate(object sender, EventArgs e)
         {
             var driveEntity = (DriveEntityInfo)((ListView)sender).SelectedItems[0].Tag;
-            
+
             if (driveEntity.IsDirectory)
                 ChangeDirectory(driveEntity);
             else
@@ -123,7 +125,7 @@ namespace CloudDisksAggregatorUI.UI
                 AddItems(driveEntity.DriveEngine, driveEntity.FullPath);
             else
             {
-                AddItems( driveEntity.DriveEngine, driveEntity.FullPath);
+                AddItems(driveEntity.DriveEngine, driveEntity.FullPath);
                 currentDriveEngine = driveEntity.DriveEngine;
             }
             currentDirectory = driveEntity.FullPath;
@@ -173,13 +175,12 @@ namespace CloudDisksAggregatorUI.UI
 
         private async Task ShowSplashScreen(Task task, bool showAllAfter = true)
         {
-            var screen = new SplashControl(() => task.IsCompleted);
-            screen.OnComplete += () => CloseSplashScreen(showAllAfter);
+            splashScreen = new SplashControl(() => task.IsCompleted);
+            splashScreen.OnComplete += () => CloseSplashScreen(showAllAfter);
             HideAll();
-            Controls.Add(screen);
-            screen.SizeChange();
-            screen.Show();
-
+            Controls.Add(splashScreen);
+            splashScreen.SizeChange();
+            splashScreen.Show();
             try
             {
                 await task;
