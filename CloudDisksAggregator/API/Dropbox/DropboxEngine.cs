@@ -61,6 +61,6 @@ namespace CloudDisksAggregator.API.Dropbox
                 (await diskApi.Files.ListFolderAsync(directory, true)).Entries, this);
 
         public async Task<List<DriveEntityInfo>> Search(string searchLine, string directory) 
-            => EntityFinder.Search(searchLine, await GetFlatList(directory));
+            => EntityFinder.Search(searchLine, await GetFlatList(directory == "/" ? "" : directory));
     }
 }
