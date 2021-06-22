@@ -9,5 +9,6 @@ namespace CloudDisksAggregator.Core
         public Task<byte[]> Download(string pathToEntity);
         public Task Save(string pathToEntity, string pathToCatalogForSave = "");
         public Task<List<DriveEntityInfo>> GetCatalogContent(string pathToCatalog);
+        public Task<List<DriveEntityInfo>> Search(string searchLine, string directory);
     }
 }

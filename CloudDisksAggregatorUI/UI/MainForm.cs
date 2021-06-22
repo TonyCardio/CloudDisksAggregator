@@ -2,6 +2,7 @@
 using CloudDisksAggregator.UI;
 using CloudDisksAggregatorUI.FileContent;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -9,7 +10,7 @@ namespace CloudDisksAggregatorUI.UI
 {
     public partial class MainForm : Form
     {
-        private readonly UserAccount[] accounts;
+        private List<UserAccount> accounts;
         private readonly ICloudApi[] apis;
         private readonly IViewerFactory viewerFactory;
 
@@ -17,7 +18,7 @@ namespace CloudDisksAggregatorUI.UI
         {
             this.apis = apis;
             this.viewerFactory = viewerFactory;
-            accounts = apis.SelectMany(x => x.Drive.LoadAccounts()).ToArray();
+            accounts = apis.SelectMany(x => x.Drive.LoadAccounts()).ToList();
             InitializeComponent();
             InitView();
         }
@@ -34,15 +35,15 @@ namespace CloudDisksAggregatorUI.UI
         private void OnSelectDriveButton_Click(object sender, EventArgs e)
         {
             HideAllPanels();
-            var engine = (ICloudDriveEngine) ((Button) sender).Tag;
-            controlPanel.Controls.Add(new CloudContentControl(new[] {engine}, viewerFactory));
+            var account = (UserAccount)((Button)sender).Tag;
+            controlPanel.Controls.Add(new CloudContentControl(new[] { account }, viewerFactory));
         }
 
         private void OnAllButton_Click(object sender, EventArgs e)
         {
             HideAllPanels();
             controlPanel.Controls
-                .Add(new CloudContentControl(accounts.Select(x => x.DriveEngine), viewerFactory));
+                .Add(new CloudContentControl(accounts, viewerFactory));
         }
 
         private void HideAllPanels()
@@ -67,6 +68,7 @@ namespace CloudDisksAggregatorUI.UI
         private void OnAddNewDrive(UserAccount account)
         {
             AddNewDiskSelectButton(account);
+            accounts.Add(account);
             HideAllPanels();
         }
 
