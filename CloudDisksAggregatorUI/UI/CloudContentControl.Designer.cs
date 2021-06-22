@@ -6,23 +6,6 @@ using CloudDisksAggregator.Core;
 
 namespace CloudDisksAggregatorUI.UI
 {
-    partial class SearchBox : TextBox
-    {
-        public event EventHandler Press;
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-                OnEvent();
-            else
-                base.OnKeyDown(e);
-        }
-        
-        private void OnEvent() {
-            if (Press != null) {
-                Press(this, EventArgs.Empty);
-            }
-        }
-    }
     partial class CloudContentControl
     {
         /// <summary> 
@@ -42,8 +25,10 @@ namespace CloudDisksAggregatorUI.UI
             }
             base.Dispose(disposing);
         }
-
-        private SearchBox createSearchBox()
+        
+        #region Инициализация Control-а
+        
+        private SearchBox СreateSearchBox()
         {
             var searchBox = new SearchBox()
             {
@@ -63,7 +48,7 @@ namespace CloudDisksAggregatorUI.UI
             return searchBox;
         }
 
-        private ListView createListView(ImageList iconList)
+        private ListView СreateListView(ImageList iconList)
         {
             return new ListView()
             {
@@ -84,7 +69,7 @@ namespace CloudDisksAggregatorUI.UI
             };
         }
         
-        private ImageList createImageList(IContainer components, ComponentResourceManager resources)
+        private ImageList СreateImageList(IContainer components, ComponentResourceManager resources)
         {
             var imageList = new ImageList(components)
             {
@@ -97,7 +82,7 @@ namespace CloudDisksAggregatorUI.UI
             return imageList;
         }
 
-        private FlowLayoutPanel createFolderPanel()
+        private FlowLayoutPanel CreateFolderPanel()
         {
             return new FlowLayoutPanel()
             {
@@ -112,11 +97,11 @@ namespace CloudDisksAggregatorUI.UI
             };
         }
 
-        private ValueTuple<ListView, FlowLayoutPanel> initializeDrivePanel(IContainer components, ComponentResourceManager resources)
+        private (ListView, FlowLayoutPanel) InitializeDrivePanel(IContainer components, ComponentResourceManager resources)
         {
-            var iconList = createImageList(components, resources);
-            var viewContentList = createListView(iconList);
-            var folderPanel = createFolderPanel();
+            var iconList = СreateImageList(components, resources);
+            var viewContentList = СreateListView(iconList);
+            var folderPanel = CreateFolderPanel();
             var panel = new Panel()
             {
                 Dock = DockStyle.Bottom,
@@ -134,9 +119,6 @@ namespace CloudDisksAggregatorUI.UI
             
             return (viewContentList, folderPanel);
         }
-        
-        #region Код, автоматически созданный конструктором компонентов
-
         private void InitializeControl()
         {
             Dock = DockStyle.Fill;
@@ -144,7 +126,7 @@ namespace CloudDisksAggregatorUI.UI
             AllowDrop = true;
             DragEnter += CloudContentControl_DragEnter;
             DragDrop += CloudContentControl_DragDrop;
-            Controls.Add(createSearchBox());
+            Controls.Add(СreateSearchBox());
         }
 
         #endregion

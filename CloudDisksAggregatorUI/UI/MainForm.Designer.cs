@@ -200,7 +200,7 @@ namespace CloudDisksAggregatorUI.UI
             btn.TabIndex = 1;
             btn.TabStop = false;
             btn.Text = acc.Name;
-            btn.Tag = acc.DriveEngine;
+            btn.Tag = acc;
             btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btn.UseVisualStyleBackColor = true;
             btn.Click += OnSelectDriveButton_Click;
